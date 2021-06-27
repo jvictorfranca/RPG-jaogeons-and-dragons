@@ -19,6 +19,9 @@
   background-color: yellow;
   height: 90%;
   width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 #console {
@@ -32,7 +35,40 @@
 .card {
   width: 90%;
   height: 200px;
-
   background-color: orange;
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  padding-bottom: 10px;
+  border: double black;
+}
+
+.card p.turn {
+  align-self: flex-end;
+  padding-right: 10px;
+}
+
+.card img {
+  width: 35%;
+}
+
+#hand :hover {
+  opacity: 0.9;
+  border: solid white;
+  color: white;
+}
+
+#hand p:hover {
+  border: none;
+}
+
+#hand img:hover {
+  border: none;
+}
+
+.turned {
+  background-color: ;
 }
