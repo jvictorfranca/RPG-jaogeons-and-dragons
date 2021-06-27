@@ -1,0 +1,38 @@
+#game-container {
+  background-color: red;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#status-bars {
+  background-color: blue;
+  align-self: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
+  height: 10%;
+}
+
+#hand {
+  height: max-content;
+  background-color: yellow;
+  height: 90%;
+  width: 20%;
+}
+
+#console {
+  height: 400px;
+  background-color: gray;
+  margin-top: 20px;
+  width: 100%;
+  overflow: auto;
+}
+
+.card {
+  width: 90%;
+  height: 200px;
+
+  background-color: orange;
+  margin: 10px;
+}
