@@ -107,7 +107,7 @@ main {
 }
 
 .bars-character {
-  background-color: black;
+  background-color: lightgray;
   height: 80%;
   display: flex;
   width: 20%;
@@ -121,7 +121,8 @@ main {
 
 .hp-mana-box {
   height: 100%;
-  background-color: blue;
+  background-color: lightgray;
+  width: 75%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -187,21 +188,31 @@ main {
   background-color: rgb(95, 2, 2);
   height: 80%;
   display: flex;
-  width: 48%;
+  width: 55%;
 }
 
 .bar-enemy img {
   height: 100%;
   border-radius: 100%;
-  background-color: teal;
+  background-color: rgb(100, 66, 104);
 }
 
-.hp-mana-box {
+.bar-enemy .hp-mana-box {
   height: 100%;
-  background-color: lightgray;
+  background-color: rgb(95, 2, 2);
   width: 75%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+}
+
+.bar-enemy .hp-container {
+  background-color: rgb(100, 66, 104);
+  height: 60%;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
 }
