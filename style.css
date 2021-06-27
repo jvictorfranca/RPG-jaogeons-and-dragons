@@ -216,3 +216,20 @@ main {
   justify-content: center;
   padding: 5px;
 }
+
+.bar-enemy .hp-text {
+  text-align: center;
+  color: white;
+  opacity: 1;
+  position: absolute;
+  margin: 0px;
+  text-align: center;
+  justify-self: center;
+  align-self: center;
+  opacity: 0.1;
+  font-size: 50px;
+}
+
+.bar-enemy .hp-text:hover {
+  opacity: 1;
+}
