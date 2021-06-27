@@ -210,7 +210,7 @@ main {
 .bar-enemy .hp-container {
   background-color: rgb(100, 66, 104);
   height: 60%;
-  width: 85%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -232,4 +232,8 @@ main {
 
 .bar-enemy .hp-text:hover {
   opacity: 1;
+}
+
+.bar-enemy .hp-mana-box {
+  width: 100%;
 }
