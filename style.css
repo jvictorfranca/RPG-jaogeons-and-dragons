@@ -52,7 +52,8 @@ main {
 }
 
 .card img {
-  width: 35%;
+  height: 57%;
+  flex-grow: 1;
 }
 
 #hand :hover {
@@ -86,6 +87,18 @@ main {
   border: solid black;
   opacity: 1;
 }
+#end-turn {
+  background-color: black;
+  color: red;
+  text-align: center;
+  width: 80px;
+  height: 60px;
+  font-size: 20px;
+  align-self: center;
+  font-weight: 600;
+  line-height: 150%;
+  border: solid red;
+}
 
 #status-bars {
   display: flex;
@@ -94,10 +107,10 @@ main {
 }
 
 .bars-character {
-  background-color: gray;
+  background-color: black;
   height: 80%;
   display: flex;
-  width: 25%;
+  width: 20%;
 }
 
 .bars-character img {
@@ -108,8 +121,7 @@ main {
 
 .hp-mana-box {
   height: 100%;
-  background-color: white;
-  width: 75%;
+  background-color: blue;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -159,7 +171,7 @@ main {
 
 .hp {
   height: 100%;
-  width: 70%;
+  width: 80%;
   background-color: red;
   align-self: flex-start;
 }
@@ -169,4 +181,27 @@ main {
   width: 50%;
   background-color: blue;
   align-self: flex-start;
+}
+
+.bar-enemy {
+  background-color: rgb(95, 2, 2);
+  height: 80%;
+  display: flex;
+  width: 48%;
+}
+
+.bar-enemy img {
+  height: 100%;
+  border-radius: 100%;
+  background-color: teal;
+}
+
+.hp-mana-box {
+  height: 100%;
+  background-color: lightgray;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
