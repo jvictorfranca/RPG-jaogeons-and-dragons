@@ -3,3 +3,9 @@ usar .bind() e um objeto de skills com .bind
  https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
  Timing nos fundos: https://www.w3schools.com/js/js_timing.asp
  Da para brincar com objetos com target.
+ Utilizar array.include  type.includes('fire')
+ https://www.w3schools.com/jsref/jsref_includes_array.asp
+ Utilizar remove event listener.
+ https://stackoverflow.com/questions/28610365/how-can-i-add-an-event-for-a-one-time-click-to-a-function    (cuidado, pode remover todos)
+ https://developer.mozilla.org/pt-BR/docs/Web/API/EventTarget/removeEventListener
+ https://www.w3schools.com/jsref/met_element_removeeventlistener.asp

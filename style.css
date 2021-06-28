@@ -172,7 +172,7 @@ main {
 
 .hp {
   height: 100%;
-  width: 80%;
+  width: 90%;
   background-color: red;
   align-self: flex-start;
 }
@@ -200,7 +200,7 @@ main {
 .bar-enemy .hp-mana-box {
   height: 100%;
   background-color: rgb(95, 2, 2);
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -232,8 +232,4 @@ main {
 
 .bar-enemy .hp-text:hover {
   opacity: 1;
-}
-
-.bar-enemy .hp-mana-box {
-  width: 100%;
 }
