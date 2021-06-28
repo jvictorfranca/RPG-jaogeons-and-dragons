@@ -1,0 +1,5 @@
+Utilizar party com array (se muda array muda os personagens)
+usar .bind() e um objeto de skills com .bind
+ https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+ Timing nos fundos: https://www.w3schools.com/js/js_timing.asp
+ Da para brincar com objetos com target.
