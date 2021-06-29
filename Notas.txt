@@ -19,3 +19,5 @@ document.querySelector('#enemy .effect').style.backgroundImage = 'url(Images/ski
 Fazer uma função cria P para fazer os textos no battleLog
 
 Mudar turn para action e fazer uma variavel turn para logar no console.
+
+Fazer objeto endturn como objeto função.
