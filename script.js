@@ -63,7 +63,9 @@ const skills = {
     name: 'Thunder bolt',
     skill: getThunderbolt(),
     minDamage: 40,
-    maxDamage: ' 2 * this.inteligence',
+    maxDamage: function () {
+      return this.inteligence;
+    },
     manaCost: 30,
     quantity: 5,
     type: 'Damage',
@@ -220,7 +222,7 @@ const skills = {
 
 function getThunderbolt() {
   return function thunderbolt() {
-    console.log(skills.thunderbolt.maxDamage);
+    console.log(skills.thunderbolt.maxDamage.bind(classes.mage)());
   };
 }
 
