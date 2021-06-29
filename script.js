@@ -222,14 +222,51 @@ const skills = {
 
 function getThunderbolt() {
   return function thunderbolt() {
-    console.log(skills.thunderbolt.maxDamage.bind(classes.mage)());
+    console.log(skills.thunderbolt.maxDamage.bind(this)());
+    console.log(this);
   };
 }
+
+//Monsters: Aqui ficarão os monstros inimigos:
+
+const monsters = {
+  dragon: {
+    class: 'dragon',
+    agility: 50,
+    inteligence: 30,
+    strength: 60,
+    maxHp: 1500,
+    hp: 1500,
+    maxMp: Infinity,
+    mp: Infinity,
+    armor: 20,
+    critChance: 0.1,
+    type: 'fire',
+    armor: 'dragonskin',
+    equips: [],
+    skillsList: [
+      'fireclaws',
+      'winghurricane',
+      'dragonstrongfirebreath',
+      'dragonfirebite',
+      'firewall',
+    ],
+    style: {
+      icon: 'Images / CharacterIcons / Images/CharacterIcons/Dragon.png',
+      color: 'rgb(100, 66, 104)',
+    },
+  },
+};
 
 //Funções de início de jogo: Aqui ficam as funções para utilizar na criação de um novo game
 //choseClass: Define qual classe os players 1 e 2 será, entre mage e warrior.
 const chooseClass = (className) => {
   return Object.assign({}, classes[className]);
+};
+
+//chooseEnemy: Define qual monstro será o inimigo. Apenas dragon
+const chooseEnemy = (monster) => {
+  return Object.assign({}, monsters[monster]);
 };
 
 //Funções de jogo: Aqui ficaram as funções para utilizar no game.
@@ -243,3 +280,9 @@ function getCards(player) {
   });
   return cards;
 }
+
+//Inicio de jogo: Aqui é onde o jogo é iniciado e personagens são criados.
+
+const player1 = chooseClass('warrior');
+const player2 = chooseClass('mage');
+const enemy = chooseEnemy('dragon');
