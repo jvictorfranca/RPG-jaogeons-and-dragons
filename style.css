@@ -46,9 +46,10 @@ main {
   border: double black;
 }
 
-.card p.turn {
-  align-self: flex-end;
-  padding-right: 10px;
+.card div {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
 }
 
 .card img {
@@ -62,6 +63,7 @@ main {
   color: white;
 }
 
+#hand div div:hover,
 #hand p:hover {
   border: none;
 }
@@ -79,7 +81,8 @@ main {
 }
 
 .turned img,
-.turned p {
+.turned p,
+.turned div div {
   display: none;
 }
 
