@@ -21,3 +21,8 @@ Fazer uma função cria P para fazer os textos no battleLog
 Mudar turn para action e fazer uma variavel turn para logar no console.
 
 Fazer objeto endturn como objeto função.
+
+Usar setinterval para checar fim de turno.
+
+Usar objeto com varias funções para endturn com .call()
+https://stackoverflow.com/questions/49552862/is-there-a-way-to-call-all-functions-inside-an-object-in-javascript
