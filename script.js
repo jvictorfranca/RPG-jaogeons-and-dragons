@@ -281,6 +281,11 @@ function getCards(player) {
   return cards;
 }
 
+//Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
+
+//cardsInHand: Seletor para as cartas (3) que são a mão do jogador.
+let cardsInHand = document.querySelectorAll('#hand .card');
+
 //Inicio de jogo: Aqui é onde o jogo é iniciado e personagens são criados.
 
 const player1 = chooseClass('warrior');
