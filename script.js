@@ -9,7 +9,7 @@ const getRandomBetween = (min, max) => {
 //Classes: Aqui ficarão as classes definidas para o jogo.
 const classes = {
   mage: {
-    name: 'mage',
+    class: 'mage',
     agility: 20,
     inteligence: 60,
     strength: 10,
@@ -29,7 +29,7 @@ const classes = {
     },
   },
   warrior: {
-    name: 'warrior',
+    class: 'warrior',
     agility: 20,
     inteligence: 10,
     strength: 50,
@@ -63,7 +63,7 @@ const skills = {
     name: 'Thunder bolt',
     skill: getThunderbolt(),
     minDamage: 40,
-    maxDamage: 2 * this.inteligence,
+    maxDamage: ' 2 * this.inteligence',
     manaCost: 30,
     quantity: 5,
     type: 'Damage',
@@ -75,9 +75,9 @@ const skills = {
   },
   firewall: {
     name: 'Fire wall',
-    skill: getFireball(),
+    // skill: getFireball(),
     minDamage: 60,
-    maxDamage: '1,5 * inteligence',
+    maxDamage: '1,5 * this.inteligence',
     manaCost: 25,
     quantity: 4,
     type: 'Damage',
@@ -89,7 +89,7 @@ const skills = {
   },
   freeze: {
     name: 'Freeze',
-    skill: getFreeze(),
+    // skill: getFreeze(),
     minDamage: 10,
     maxDamage: 30,
     manaCost: 30,
@@ -103,9 +103,9 @@ const skills = {
   },
   blackfire: {
     name: 'Black fire',
-    skill: getBlackfire(),
+    // skill: getBlackfire(),
     minDamage: 300,
-    maxDamage: 10 * this.inteligence,
+    maxDamage: '10 * this.inteligence',
     manaCost: 40,
     quantity: 1,
     type: 'S+ damage',
@@ -117,7 +117,7 @@ const skills = {
   },
   smallheal: {
     name: 'Small heal',
-    skill: getSmallHeal(),
+    // skill: getSmallHeal(),
     minDamage: 0,
     maxDamage: 0,
     manaCost: 30,
@@ -131,9 +131,9 @@ const skills = {
   },
   slash: {
     name: 'Slash',
-    skill: getSlash(),
+    // skill: getSlash(),
     minDamage: 10,
-    maxDamage: 2 * this.strength,
+    maxDamage: 2,
     manaCost: 0,
     quantity: 7,
     type: 'Damage',
@@ -145,7 +145,7 @@ const skills = {
   },
   armorbreak: {
     name: 'Armor break',
-    skill: getArmorbreak(),
+    // skill: getArmorbreak(),
     minDamage: 0,
     maxDamage: 20,
     manaCost: 5,
@@ -159,7 +159,7 @@ const skills = {
   },
   shielded: {
     name: 'Shielded',
-    skill: getShielded(),
+    // skill: getShielded(),
     minDamage: 0,
     maxDamage: 0,
     manaCost: 20,
@@ -173,9 +173,9 @@ const skills = {
   },
   ultraslash: {
     name: 'Ultra slash',
-    skill: getUltraslash(),
+    // skill: getUltraslash(),
     minDamage: 200,
-    maxDamage: 7 * this.strength,
+    maxDamage: '7 * this.strength',
     manaCost: 20,
     quantity: 1,
     type: 'S+ damage',
@@ -187,7 +187,7 @@ const skills = {
   },
   warriorrage: {
     name: 'Warrior rage',
-    skill: getWarriorrage(),
+    // skill: getWarriorrage(),
     minDamage: 0,
     maxDamage: 0,
     manaCost: 10,
@@ -201,9 +201,9 @@ const skills = {
   },
   magicsword: {
     name: 'Magic sword',
-    skill: getMagicsword(),
+    // skill: getMagicsword(),
     minDamage: 100,
-    maxDamage: 100 + 10 * this.inteligence,
+    maxDamage: '100 + 10 * this.inteligence',
     manaCost: 30,
     quantity: 2,
     type: 'Inteligence damage',
@@ -214,8 +214,30 @@ const skills = {
     },
   },
 };
-//Funções de jogo: Aqui ficaram as funções para utilizar no game.
-//choseClass: Define qual classe o personagem 1 e 2 será, entre mage e warrior.
+
+//Funções de Magia: Aqui ficam as funções para a realização de cada magia. Vale lembrar que cada função retorna a função da própria magia, então para acessa-la deve-se utilizar skills.magia.skill
+//Lembrar de tirar os coments das skills e arrumar o getthunderBolt
+
+function getThunderbolt() {
+  return function thunderbolt() {
+    console.log(skills.thunderbolt.maxDamage);
+  };
+}
+
+//Funções de início de jogo: Aqui ficam as funções para utilizar na criação de um novo game
+//choseClass: Define qual classe os players 1 e 2 será, entre mage e warrior.
 const chooseClass = (className) => {
   return Object.assign({}, classes[className]);
 };
+
+//Funções de jogo: Aqui ficaram as funções para utilizar no game.
+//getCards: Pega as cartas do deck de um player
+function getCards(player) {
+  let cards = [];
+  player.skillsList.forEach((skill) => {
+    for (let index = 0; index < skills[skill].quantity; index += 1) {
+      cards.push(skill);
+    }
+  });
+  return cards;
+}
