@@ -6,6 +6,12 @@ const getRandomBetween = (min, max) => {
   return answer;
 };
 
+const writeBattle = (message) => {
+  p = document.createElement('p');
+  p.innerHTML = message;
+  battleLog.appendChild(p);
+};
+
 //Classes: Aqui ficarão as classes definidas para o jogo.
 const classes = {
   mage: {
@@ -26,6 +32,8 @@ const classes = {
     style: {
       icon: 'Images / CharacterIcons / Mage.png',
       color: 'rgb(43, 80, 172)',
+      animation: 'Images/character-animations/mage1.gif',
+      attackAnimation: 'Images/character-animations/mage1.gif',
     },
   },
   warrior: {
@@ -53,6 +61,8 @@ const classes = {
     style: {
       icon: 'Images / CharacterIcons / Warrior.png',
       color: 'rgb(85, 44, 44)',
+      animation: 'Images/character-animations/warior1.gif',
+      attackAnimation: 'Images/character-animations/warior1.gif',
     },
   },
 };
@@ -62,14 +72,17 @@ const skills = {
   thunderbolt: {
     name: 'Thunder bolt',
     skill: getThunderbolt(),
-    minDamage: 40,
+    animation: animateThunderbolt(),
+    minDamage: function () {
+      return 40;
+    },
     maxDamage: function () {
-      return this.inteligence;
+      return 2 * this.inteligence;
     },
     manaCost: 30,
     quantity: 5,
     type: 'Damage',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/thunderbolt.png',
       animation: 'Images/skill-animations/thunderbolt.gif',
@@ -78,12 +91,17 @@ const skills = {
   firewall: {
     name: 'Fire wall',
     // skill: getFireball(),
-    minDamage: 60,
-    maxDamage: '1,5 * this.inteligence',
+    animation: animateFirewall(),
+    minDamage: function () {
+      return 60;
+    },
+    maxDamage: function () {
+      return 1, 5 * this.inteligence;
+    },
     manaCost: 25,
     quantity: 4,
     type: 'Damage',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/fire.png',
       animation: 'Images/skill-animations/firewall.gif',
@@ -92,12 +110,16 @@ const skills = {
   freeze: {
     name: 'Freeze',
     // skill: getFreeze(),
-    minDamage: 10,
-    maxDamage: 30,
+    minDamage: function () {
+      return 10;
+    },
+    maxDamage: function () {
+      return 30;
+    },
     manaCost: 30,
     quantity: 3,
     type: 'Debuff',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/ice.png',
       animation: 'Images/skill-animations/freeze.gif',
@@ -106,12 +128,16 @@ const skills = {
   blackfire: {
     name: 'Black fire',
     // skill: getBlackfire(),
-    minDamage: 300,
-    maxDamage: '10 * this.inteligence',
+    minDamage: function () {
+      return 4 * this.inteligence;
+    },
+    maxDamage: function () {
+      return 10 * this.inteligence;
+    },
     manaCost: 40,
     quantity: 1,
     type: 'S+ damage',
-    turns: 2,
+    actions: 2,
     style: {
       icon: 'Images/skills-icons/dark-fire.png',
       animation: 'Images/skill-animations/black-fire.gif',
@@ -120,12 +146,16 @@ const skills = {
   smallheal: {
     name: 'Small heal',
     // skill: getSmallHeal(),
-    minDamage: 0,
-    maxDamage: 0,
+    minDamage: function () {
+      return 0;
+    },
+    maxDamage: function () {
+      return 0;
+    },
     manaCost: 30,
     quantity: 3,
     type: 'Healing',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/smallheal.png',
       animation: 'Images/skill-animations/small-heal.gif',
@@ -134,12 +164,16 @@ const skills = {
   slash: {
     name: 'Slash',
     // skill: getSlash(),
-    minDamage: 10,
-    maxDamage: 2,
+    minDamage: function () {
+      return 10;
+    },
+    maxDamage: function () {
+      return 2 * this.strength;
+    },
     manaCost: 0,
     quantity: 7,
     type: 'Damage',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/slash.png',
       animation: 'Images/skill-animations/slash.gif',
@@ -148,12 +182,16 @@ const skills = {
   armorbreak: {
     name: 'Armor break',
     // skill: getArmorbreak(),
-    minDamage: 0,
-    maxDamage: 20,
+    minDamage: function () {
+      return 0;
+    },
+    maxDamage: function () {
+      return 20;
+    },
     manaCost: 5,
     quantity: 3,
     type: 'Debuff',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/shield-break.png',
       animation: 'Images/skill-animations/armor-break.gif',
@@ -162,12 +200,16 @@ const skills = {
   shielded: {
     name: 'Shielded',
     // skill: getShielded(),
-    minDamage: 0,
-    maxDamage: 0,
+    minDamage: function () {
+      return 0;
+    },
+    maxDamage: function () {
+      return 0;
+    },
     manaCost: 20,
     quantity: 3,
     type: 'Self buff',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/shielded.png',
       animation: 'Images/skill-animations/shielded.gif',
@@ -176,12 +218,16 @@ const skills = {
   ultraslash: {
     name: 'Ultra slash',
     // skill: getUltraslash(),
-    minDamage: 200,
-    maxDamage: '7 * this.strength',
+    minDamage: function () {
+      return 0;
+    },
+    maxDamage: function () {
+      return 7 * this.strength;
+    },
     manaCost: 20,
     quantity: 1,
     type: 'S+ damage',
-    turns: 2,
+    actions: 2,
     style: {
       icon: 'Images/skills-icons/super-slash.png',
       animation: 'Images/skill-animations/ultra-slash.gif',
@@ -190,12 +236,16 @@ const skills = {
   warriorrage: {
     name: 'Warrior rage',
     // skill: getWarriorrage(),
-    minDamage: 0,
-    maxDamage: 0,
+    minDamage: function () {
+      return 0;
+    },
+    maxDamage: function () {
+      return 0;
+    },
     manaCost: 10,
     quantity: 2,
     type: 'Conditional buff',
-    turns: 1,
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/rage.png',
       animation: 'Images/skill-animations/warrior-rage.gif',
@@ -204,12 +254,16 @@ const skills = {
   magicsword: {
     name: 'Magic sword',
     // skill: getMagicsword(),
-    minDamage: 100,
-    maxDamage: '100 + 10 * this.inteligence',
+    minDamage: function () {
+      return 100;
+    },
+    maxDamage: function () {
+      return 100 + 7 * this.inteligence;
+    },
     manaCost: 30,
     quantity: 2,
-    type: 'Inteligence damage',
-    turns: 1,
+    type: 'Magic damage',
+    actions: 1,
     style: {
       icon: 'Images/skills-icons/magicsword.png',
       animation: 'Images/skill-animations/magic-sword.gif',
@@ -227,6 +281,48 @@ function getThunderbolt() {
   };
 }
 
+//Funções de animação: Aqui ficarão as funções para animar as magias.  Novamente cada função retorna a função da animação, assim como no caso das funções de magia.
+
+function animateThunderbolt() {
+  return function thunderboltAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+    setTimeout(() => {
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/thunderbolt.gif)';
+    }, 1500);
+    setTimeout(() => {
+      target.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
+function animateFirewall() {
+  return function firewallAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 0.8;
+      target.DOM.effect.style.borderRadius = '40%';
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/firewall.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
 //Monsters: Aqui ficarão os monstros inimigos:
 
 const monsters = {
@@ -254,6 +350,8 @@ const monsters = {
     style: {
       icon: 'Images / CharacterIcons / Images/CharacterIcons/Dragon.png',
       color: 'rgb(100, 66, 104)',
+      animation: 'Images/character-animations/dragon2.gif',
+      attackAnimation: 'Images/character-animations/dragon2.gif',
     },
   },
 };
@@ -269,6 +367,40 @@ const chooseEnemy = (monster) => {
   return Object.assign({}, monsters[monster]);
 };
 
+//createDOM1: Cria um objeto com os caminhos da barra de vida, mp, efeitos e animação do personagem 1
+const createDOM1 = (player1) => {
+  player1['DOM'] = {
+    character: document.querySelector('#character1.character'),
+    effect: document.querySelector('#character1 .effect'),
+    hp: document.querySelector('#character1-bar .hp'),
+    hpText: document.querySelector('#character1-bar .hp-text'),
+    mp: document.querySelector('#character1-bar .mp'),
+    mpText: document.querySelector('#character1-bar .mp-text'),
+  };
+};
+
+//createDOM2: Cria um objeto com os caminhos da barra de vida, mp, efeitos e animação do personagem 2
+const createDOM2 = (player2) => {
+  player2['DOM'] = {
+    character: document.querySelector('#character2.character'),
+    effect: document.querySelector('#character2 .effect'),
+    hp: document.querySelector('#character2-bar .hp'),
+    hpText: document.querySelector('#character2-bar .hp-text'),
+    mp: document.querySelector('#character2-bar .mp'),
+    mpText: document.querySelector('#character2-bar .mp-text'),
+  };
+};
+
+//createDOMenemy: Cria um objeto com os caminhos da barra de vida, efeitos e animação do enemy
+const createDOMenemy = (enemy) => {
+  enemy['DOM'] = {
+    character: document.querySelector('#enemy.monster'),
+    effect: document.querySelector('#enemy .effect'),
+    hp: document.querySelector('#enemy-bar .hp'),
+    hpText: document.querySelector('#enemy-bar .hp-text'),
+  };
+};
+
 //Funções de jogo: Aqui ficaram as funções para utilizar no game.
 //getCards: Pega as cartas do deck de um player
 function getCards(player) {
@@ -281,13 +413,65 @@ function getCards(player) {
   return cards;
 }
 
-//Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
+//fixHP função que arruma a width da barra de hp de um personagem.
+const fixHP = (character) => {
+  if (character.DOM.hp !== undefined) {
+    if (character.hp > character.maxHp) {
+      character.hp = character.maxHp;
+    }
+    let value = Math.ceil((character.hp / character.maxHp) * 100);
+    let width = `${value}%`;
+    let text = `HP: ${character.hp}/${character.maxHp}`;
+    character.DOM.hp.style.width = width;
+    character.DOM.hpText.innerText = text;
+  }
+};
 
+const fixMP = (character) => {
+  if (character.DOM.mp !== undefined) {
+    if (character.mp > character.maxMp) {
+      character.mp = character.maxMp;
+    }
+    let value = Math.ceil((character.mp / character.maxMp) * 100);
+    let width = `${value}%`;
+    let text = `MP: ${character.mp}/${character.maxMp}`;
+    character.DOM.mp.style.width = width;
+    character.DOM.mpText.innerText = text;
+  }
+};
+
+const fixBars = (character) => {
+  fixHP(character);
+  fixMP(character);
+};
+
+const fixAllBars = (battleCharacters) => {
+  battleCharacters.forEach((character) => {
+    fixBars(character);
+  });
+};
+
+//Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
+const battleLog = document.querySelector('#console');
 //cardsInHand: Seletor para as cartas (3) que são a mão do jogador.
 let cardsInHand = document.querySelectorAll('#hand .card');
 
 //Inicio de jogo: Aqui é onde o jogo é iniciado e personagens são criados.
-
+//Cria os personagens 1 e 2 e inimigo
 const player1 = chooseClass('warrior');
 const player2 = chooseClass('mage');
 const enemy = chooseEnemy('dragon');
+
+//Cria objetos DOM dos player 1 e 2
+createDOM1(player1);
+createDOM2(player2);
+
+//Cria objetos DOM do enemy
+createDOMenemy(enemy);
+
+//Cria as arrays de party(aliados) e combat(aliados e inimigo)
+let party = [player1, player2];
+let combat = [player1, player2, enemy];
+
+//Arruma as barras de vida
+fixAllBars(combat);

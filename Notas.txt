@@ -10,7 +10,7 @@ usar .bind() e um objeto de skills com .bind
  https://developer.mozilla.org/pt-BR/docs/Web/API/EventTarget/removeEventListener
  https://www.w3schools.com/jsref/met_element_removeeventlistener.asp
 Usar o DOM elements como chave e valor de cada personagem, para conseguir acessar. Utilizar em funções de inicio de jogo.
-Ter um jeito de fazer Max damage.. (usar this no max damage e função, quando chamar usa o .bind())
+
 
 
 Fazer animação separada da skill com função que chama função parametros target e character.
@@ -20,9 +20,17 @@ Fazer uma função cria P para fazer os textos no battleLog
 
 Mudar turn para action e fazer uma variavel turn para logar no console.
 
-Fazer objeto endturn como objeto função.
-
 Usar setinterval para checar fim de turno.
 
+Fazer objeto endturn como objeto função.
 Usar objeto com varias funções para endturn com .call()
 https://stackoverflow.com/questions/49552862/is-there-a-way-to-call-all-functions-inside-an-object-in-javascript
+
+
+EMOJIS: https://www.w3schools.com/charsets/ref_emoji.asp  
+https://www.w3schools.com/html/html_emojis.asp
+
+
+
+FEITAS:
+Ter um jeito de fazer Max damage.. (usar this no max damage e função, quando chamar usa o .bind())
