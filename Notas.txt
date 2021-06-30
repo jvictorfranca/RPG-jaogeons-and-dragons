@@ -1,7 +1,7 @@
-Utilizar party com array (se muda array muda os personagens)
+
 usar .bind() e um objeto de skills com .bind
  https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
- Timing nos fundos: https://www.w3schools.com/js/js_timing.asp
+ 
  Da para brincar com objetos com target.
  Utilizar array.include  type.includes('fire')
  https://www.w3schools.com/jsref/jsref_includes_array.asp
@@ -11,19 +11,22 @@ usar .bind() e um objeto de skills com .bind
  https://www.w3schools.com/jsref/met_element_removeeventlistener.asp
 Usar o DOM elements como chave e valor de cada personagem, para conseguir acessar. Utilizar em funções de inicio de jogo.
 
+Usar foreach e filter na party para ver quem morreu. Foreach muda as barras e poe os indices numa array e DEPOIS tira todos os indices
 
 
-Fazer animação separada da skill com função que chama função parametros target e character.
-document.querySelector('#enemy .effect').style.backgroundImage = 'url(Images/skill-animations/using.gif)'
+Fazer função de magia retornar true ou false e so fazer animação se for true
 
-Fazer uma função cria P para fazer os textos no battleLog
+
+
+
+
 
 Mudar turn para action e fazer uma variavel turn para logar no console.
 
 Usar setinterval para checar fim de turno.
 
 Fazer objeto endturn como objeto função.
-Usar objeto com varias funções para endturn com .call()
+Usar objeto com varias funções para endturn com .call() - Arquivo testefimturno.js
 https://stackoverflow.com/questions/49552862/is-there-a-way-to-call-all-functions-inside-an-object-in-javascript
 
 
@@ -34,3 +37,13 @@ https://www.w3schools.com/html/html_emojis.asp
 
 FEITAS:
 Ter um jeito de fazer Max damage.. (usar this no max damage e função, quando chamar usa o .bind())
+
+Utilizar party com array (se muda array muda os personagens)
+
+Fazer animação separada da skill com função que chama função parametros target e character.
+document.querySelector('#enemy .effect').style.backgroundImage = 'url(Images/skill-animations/using.gif)'
+
+Fazer uma função cria P para fazer os textos no battleLog
+
+Timing nos fundos: https://www.w3schools.com/js/js_timing.asp
+

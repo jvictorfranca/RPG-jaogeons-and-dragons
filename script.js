@@ -12,10 +12,24 @@ const writeBattle = (message) => {
   battleLog.appendChild(p);
 };
 
+const otherMember = (actual, array) => {
+  let answer = actual;
+  if (array.length === 1) {
+    answer = actual;
+  }
+  if (array.length > 1) {
+    while (answer === actual || answer === undefined) {
+      answer = array[getRandomBetween(0, array.length - 1)];
+    }
+  }
+  return answer;
+};
+
 //Classes: Aqui ficarão as classes definidas para o jogo.
 const classes = {
   mage: {
     class: 'mage',
+    status: 'alive',
     agility: 20,
     inteligence: 60,
     strength: 10,
@@ -25,7 +39,7 @@ const classes = {
     mp: 300,
     armor: 15,
     critChance: 0.2,
-    type: 'magic',
+    type: ['magic'],
     armor: 'light',
     equips: ['robe', 'lether-boots', 'scepter'],
     skillsList: ['thunderbolt', 'firewall', 'freeze', 'blackfire', 'smallheal'],
@@ -38,6 +52,7 @@ const classes = {
   },
   warrior: {
     class: 'warrior',
+    status: 'alive',
     agility: 20,
     inteligence: 10,
     strength: 50,
@@ -47,7 +62,7 @@ const classes = {
     mp: 100,
     armor: 30,
     critChance: 0.25,
-    type: 'berserker',
+    type: ['berserker'],
     armor: 'heavy',
     equips: ['fullplate', 'twin-swords', 'helmet'],
     skillsList: [
@@ -81,7 +96,7 @@ const skills = {
     },
     manaCost: 30,
     quantity: 5,
-    type: 'Damage',
+    type: 'Magic damage',
     actions: 1,
     style: {
       icon: 'Images/skills-icons/thunderbolt.png',
@@ -100,7 +115,7 @@ const skills = {
     },
     manaCost: 25,
     quantity: 4,
-    type: 'Damage',
+    type: 'Magic damage',
     actions: 1,
     style: {
       icon: 'Images/skills-icons/fire.png',
@@ -110,6 +125,7 @@ const skills = {
   freeze: {
     name: 'Freeze',
     // skill: getFreeze(),
+    animation: animateFreeze(),
     minDamage: function () {
       return 10;
     },
@@ -128,6 +144,7 @@ const skills = {
   blackfire: {
     name: 'Black fire',
     // skill: getBlackfire(),
+    animation: animateBlackfire(),
     minDamage: function () {
       return 4 * this.inteligence;
     },
@@ -136,7 +153,7 @@ const skills = {
     },
     manaCost: 40,
     quantity: 1,
-    type: 'S+ damage',
+    type: 'S+ magic damage',
     actions: 2,
     style: {
       icon: 'Images/skills-icons/dark-fire.png',
@@ -146,6 +163,7 @@ const skills = {
   smallheal: {
     name: 'Small heal',
     // skill: getSmallHeal(),
+    animation: animateSmallheal(),
     minDamage: function () {
       return 0;
     },
@@ -164,6 +182,7 @@ const skills = {
   slash: {
     name: 'Slash',
     // skill: getSlash(),
+    animation: animateSlash(),
     minDamage: function () {
       return 10;
     },
@@ -172,7 +191,7 @@ const skills = {
     },
     manaCost: 0,
     quantity: 7,
-    type: 'Damage',
+    type: 'physical damage',
     actions: 1,
     style: {
       icon: 'Images/skills-icons/slash.png',
@@ -182,6 +201,7 @@ const skills = {
   armorbreak: {
     name: 'Armor break',
     // skill: getArmorbreak(),
+    animation: animateArmorbreak(),
     minDamage: function () {
       return 0;
     },
@@ -200,6 +220,7 @@ const skills = {
   shielded: {
     name: 'Shielded',
     // skill: getShielded(),
+    animation: animateshielded(),
     minDamage: function () {
       return 0;
     },
@@ -226,7 +247,7 @@ const skills = {
     },
     manaCost: 20,
     quantity: 1,
-    type: 'S+ damage',
+    type: 'S+ physic damage',
     actions: 2,
     style: {
       icon: 'Images/skills-icons/super-slash.png',
@@ -323,11 +344,173 @@ function animateFirewall() {
     }, 3000);
   };
 }
+
+function animateFreeze() {
+  return function freezeAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/freeze.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
+function animateBlackfire() {
+  return function blackfireAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using-special.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '100%';
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/black-fire.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
+function animateSmallheal() {
+  return function smallhealAnimation(caster, target) {
+    let other = otherMember(caster, party);
+    target = target;
+
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      caster.DOM.effect.style.borderRadius = '0';
+      caster.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/small-heal.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      other.DOM.effect.style.borderRadius = '0';
+      other.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/small-heal.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      caster.DOM.effect.style.opacity = 1;
+      caster.DOM.effect.style.borderRadius = '0';
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+
+    setTimeout(() => {
+      other.DOM.effect.style.opacity = 1;
+      other.DOM.effect.style.borderRadius = '0';
+      other.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
+function animateSlash() {
+  return function slashAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '100%';
+      target.DOM.effect.style.opacity = 0.6;
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/slash.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
+function animateArmorbreak() {
+  return function armorbreakhAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '100%';
+      target.DOM.effect.style.opacity = 0.6;
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/armor-break.gif)';
+      target.DOM.effect.style.backgroundSize = 'contain';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+      target.DOM.effect.style.backgroundSize = 'cover';
+    }, 3000);
+  };
+}
+
+function animateshielded() {
+  return function slashAnimation(caster, target) {
+    target = target;
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      caster.DOM.effect.style.borderRadius = '100%';
+      caster.DOM.effect.style.opacity = 0.5;
+      caster.DOM.effect.style.backgroundPosition = '40% 50%';
+      caster.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/shilded.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      caster.DOM.effect.style.opacity = 1;
+      caster.DOM.effect.style.backgroundSize = 'cover';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+      caster.DOM.effect.style.borderRadius = '0';
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
 //Monsters: Aqui ficarão os monstros inimigos:
 
 const monsters = {
   dragon: {
     class: 'dragon',
+    status: 'alive',
     agility: 50,
     inteligence: 30,
     strength: 60,
