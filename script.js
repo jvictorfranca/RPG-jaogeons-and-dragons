@@ -5,13 +5,14 @@ const getRandomBetween = (min, max) => {
   let answer = Math.floor(Math.random() * (max - min + 1)) + min;
   return answer;
 };
-
+// writeBattle: para criar um
 const writeBattle = (message) => {
   p = document.createElement('p');
   p.innerHTML = message;
   battleLog.appendChild(p);
 };
 
+//otherMember para pegar outro membro da party (se houver)
 const otherMember = (actual, array) => {
   let answer = actual;
   if (array.length === 1) {
@@ -25,9 +26,16 @@ const otherMember = (actual, array) => {
   return answer;
 };
 
+//rollPercentage: A partir de um número entre zero e cem,  retorna true se a porcentagem for sucedida ou false se não.
+const rollPercentage = (percentage) => {
+  let number = getRandomBetween(0, 100);
+  return percentage >= number ? true : false;
+};
+
 //Classes: Aqui ficarão as classes definidas para o jogo.
 const classes = {
   mage: {
+    name: 'Mago',
     class: 'mage',
     status: 'alive',
     agility: 20,
@@ -40,7 +48,7 @@ const classes = {
     armor: 15,
     critChance: 0.2,
     type: ['magic'],
-    armor: 'light',
+    armorType: 'light',
     equips: ['robe', 'lether-boots', 'scepter'],
     skillsList: ['thunderbolt', 'firewall', 'freeze', 'blackfire', 'smallheal'],
     style: {
@@ -51,6 +59,7 @@ const classes = {
     },
   },
   warrior: {
+    name: 'Guerreiro',
     class: 'warrior',
     status: 'alive',
     agility: 20,
@@ -63,7 +72,7 @@ const classes = {
     armor: 30,
     critChance: 0.25,
     type: ['berserker'],
-    armor: 'heavy',
+    armorType: 'heavy',
     equips: ['fullplate', 'twin-swords', 'helmet'],
     skillsList: [
       'slash',
@@ -105,7 +114,7 @@ const skills = {
   },
   firewall: {
     name: 'Fire wall',
-    // skill: getFireball(),
+    skill: getFirewall(),
     animation: animateFirewall(),
     minDamage: function () {
       return 60;
@@ -113,7 +122,7 @@ const skills = {
     maxDamage: function () {
       return 1, 5 * this.inteligence;
     },
-    manaCost: 25,
+    manaCost: 35,
     quantity: 4,
     type: 'Magic damage',
     actions: 1,
@@ -124,7 +133,7 @@ const skills = {
   },
   freeze: {
     name: 'Freeze',
-    // skill: getFreeze(),
+    skill: getFreeze(),
     animation: animateFreeze(),
     minDamage: function () {
       return 10;
@@ -239,6 +248,7 @@ const skills = {
   ultraslash: {
     name: 'Ultra slash',
     // skill: getUltraslash(),
+    animation: animateUltraslash(),
     minDamage: function () {
       return 0;
     },
@@ -257,6 +267,7 @@ const skills = {
   warriorrage: {
     name: 'Warrior rage',
     // skill: getWarriorrage(),
+    animation: animateWarriorrage(),
     minDamage: function () {
       return 0;
     },
@@ -275,6 +286,7 @@ const skills = {
   magicsword: {
     name: 'Magic sword',
     // skill: getMagicsword(),
+    animation: animateMagicsword(),
     minDamage: function () {
       return 100;
     },
@@ -296,9 +308,65 @@ const skills = {
 //Lembrar de tirar os coments das skills e arrumar o getthunderBolt
 
 function getThunderbolt() {
-  return function thunderbolt() {
-    console.log(skills.thunderbolt.maxDamage.bind(this)());
-    console.log(this);
+  return function thunderbolt(caster, target) {
+    let name = 'thunderbolt';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#9889; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
+    return message;
+  };
+}
+
+function getFirewall() {
+  return function firewall(caster, target) {
+    let name = 'firewall';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let effect = rollPercentage(5);
+    effect === true ? (damage = 2 * damage) : (damage = damage);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#9889; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}.`;
+    effect === true
+      ? (message += `&#128293; TA PEGANO FOGO BIXO. ${target.name} recebeu dano crítico`)
+      : (message = message);
+    return message;
+  };
+}
+
+function getFreeze() {
+  return function freeze(caster, target) {
+    let name = 'freeze';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    damage < 0 ? (damage = 0) : damage;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#9889; ${caster.name} acabou de utilizar ${skillName} em ${target.name} que levou ${damage} de dano. A vida atual de ${target.name} é ${target.hp}.`;
+    let effect = rollPercentage(20);
+    if (effect === true) {
+      target.strength -= 10;
+      message += ` &#128148; ${target.name} está congelando e perdeu 10 de strength. Sua strength atual é de ${target.strength}.`;
+    }
+
+    return message;
   };
 }
 
@@ -479,7 +547,7 @@ function animateArmorbreak() {
 }
 
 function animateshielded() {
-  return function slashAnimation(caster, target) {
+  return function shieldedAnimation(caster, target) {
     target = target;
     caster.DOM.effect.style.backgroundImage =
       'url(Images/skill-animations/using.gif)';
@@ -505,10 +573,87 @@ function animateshielded() {
     }, 3000);
   };
 }
+
+function animateUltraslash() {
+  return function ultraslashAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using-special.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '50%';
+      target.DOM.effect.style.opacity = 0.7;
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/ultra-slash.gif)';
+      target.DOM.effect.style.backgroundPosition = '40% 50%';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+      target.DOM.effect.style.backgroundPosition = '0% 0%';
+    }, 4000);
+  };
+}
+
+function animateWarriorrage() {
+  return function warriorrageAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      caster.DOM.effect.style.borderRadius = '0%';
+      caster.DOM.effect.style.opacity = 0.6;
+      caster.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/warrior-rage.gif)';
+      caster.DOM.effect.style.backgroundPosition = '0% 35%';
+    }, 1500);
+
+    setTimeout(() => {
+      caster.DOM.effect.style.opacity = 1;
+      caster.DOM.effect.style.borderRadius = '0';
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
+function animateMagicsword() {
+  return function magicswordAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '100%';
+      target.DOM.effect.style.opacity = 0.8;
+      target.DOM.effect.style.backgroundImage =
+        'url(Images/skill-animations/magic-sword.gif)';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
 //Monsters: Aqui ficarão os monstros inimigos:
 
 const monsters = {
   dragon: {
+    name: 'Dragão',
     class: 'dragon',
     status: 'alive',
     agility: 50,
@@ -521,7 +666,7 @@ const monsters = {
     armor: 20,
     critChance: 0.1,
     type: 'fire',
-    armor: 'dragonskin',
+    armorType: 'dragonskin',
     equips: [],
     skillsList: [
       'fireclaws',
@@ -602,6 +747,9 @@ const fixHP = (character) => {
     if (character.hp > character.maxHp) {
       character.hp = character.maxHp;
     }
+    if (character.hp < 0) {
+      character.hp = 0;
+    }
     let value = Math.ceil((character.hp / character.maxHp) * 100);
     let width = `${value}%`;
     let text = `HP: ${character.hp}/${character.maxHp}`;
@@ -610,10 +758,14 @@ const fixHP = (character) => {
   }
 };
 
+//fixMP função que arruma a width da barra de mp de um personagem.
 const fixMP = (character) => {
   if (character.DOM.mp !== undefined) {
     if (character.mp > character.maxMp) {
       character.mp = character.maxMp;
+    }
+    if (character.mp < 0) {
+      character.mp = 0;
     }
     let value = Math.ceil((character.mp / character.maxMp) * 100);
     let width = `${value}%`;
@@ -622,17 +774,31 @@ const fixMP = (character) => {
     character.DOM.mpText.innerText = text;
   }
 };
-
+//fixBars função que arruma a width das barras de mp e hp de um personagem.
 const fixBars = (character) => {
   fixHP(character);
   fixMP(character);
 };
 
+//fixAllBars função que arruma a width das barras de mp e hp de uma array de personagems (combat)
 const fixAllBars = (battleCharacters) => {
   battleCharacters.forEach((character) => {
     fixBars(character);
   });
 };
+
+//useSkill: Função para usar uma magia específica. Já poe o .bind
+//OBS: futuramente vai checar mana, tirar OBS
+
+function useSkill(skillName, caster, target) {
+  let message = skills[skillName].skill.bind(caster)(caster, target);
+  skills[skillName].animation(caster, target);
+
+  setTimeout(() => {
+    writeBattle(message);
+    fixAllBars(combat);
+  }, 3000);
+}
 
 //Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
 const battleLog = document.querySelector('#console');
@@ -658,3 +824,7 @@ let combat = [player1, player2, enemy];
 
 //Arruma as barras de vida
 fixAllBars(combat);
+
+//Começa a contagem de turnos e ações restantes:
+let turn = 1;
+let actions = 2;
