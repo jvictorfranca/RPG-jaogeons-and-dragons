@@ -72,7 +72,7 @@ const classes = {
     armor: 30,
     critChance: 0.25,
     type: ['berserker'],
-    armorType: 'heavy',
+    armorType: 'heavy armor',
     equips: ['fullplate', 'twin-swords', 'helmet'],
     skillsList: [
       'slash',
@@ -117,10 +117,10 @@ const skills = {
     skill: getFirewall(),
     animation: animateFirewall(),
     minDamage: function () {
-      return 60;
+      return 50;
     },
     maxDamage: function () {
-      return 1, 5 * this.inteligence;
+      return 2 * this.inteligence;
     },
     manaCost: 35,
     quantity: 4,
@@ -152,10 +152,10 @@ const skills = {
   },
   blackfire: {
     name: 'Black fire',
-    // skill: getBlackfire(),
+    skill: getBlackfire(),
     animation: animateBlackfire(),
     minDamage: function () {
-      return 4 * this.inteligence;
+      return 5 * this.inteligence;
     },
     maxDamage: function () {
       return 10 * this.inteligence;
@@ -171,7 +171,7 @@ const skills = {
   },
   smallheal: {
     name: 'Small heal',
-    // skill: getSmallHeal(),
+    skill: getSmallheal(),
     animation: animateSmallheal(),
     minDamage: function () {
       return 0;
@@ -190,7 +190,7 @@ const skills = {
   },
   slash: {
     name: 'Slash',
-    // skill: getSlash(),
+    skill: getSlash(),
     animation: animateSlash(),
     minDamage: function () {
       return 10;
@@ -209,7 +209,7 @@ const skills = {
   },
   armorbreak: {
     name: 'Armor break',
-    // skill: getArmorbreak(),
+    skill: getArmorbreak(),
     animation: animateArmorbreak(),
     minDamage: function () {
       return 0;
@@ -228,7 +228,7 @@ const skills = {
   },
   shielded: {
     name: 'Shielded',
-    // skill: getShielded(),
+    skill: getShielded(),
     animation: animateshielded(),
     minDamage: function () {
       return 0;
@@ -247,13 +247,13 @@ const skills = {
   },
   ultraslash: {
     name: 'Ultra slash',
-    // skill: getUltraslash(),
+    skill: getUltraslash(),
     animation: animateUltraslash(),
     minDamage: function () {
-      return 0;
+      return 2 * this.strength + 160;
     },
     maxDamage: function () {
-      return 7 * this.strength;
+      return 5 * this.strength + 160;
     },
     manaCost: 20,
     quantity: 1,
@@ -266,7 +266,7 @@ const skills = {
   },
   warriorrage: {
     name: 'Warrior rage',
-    // skill: getWarriorrage(),
+    skill: getWarriorrage(),
     animation: animateWarriorrage(),
     minDamage: function () {
       return 0;
@@ -285,7 +285,7 @@ const skills = {
   },
   magicsword: {
     name: 'Magic sword',
-    // skill: getMagicsword(),
+    skill: getMagicsword(),
     animation: animateMagicsword(),
     minDamage: function () {
       return 100;
@@ -366,6 +366,138 @@ function getFreeze() {
       message += ` &#128148; ${target.name} está congelando e perdeu 10 de strength. Sua strength atual é de ${target.strength}.`;
     }
 
+    return message;
+  };
+}
+
+function getBlackfire() {
+  return function blackfire(caster, target) {
+    let name = 'blackfire';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#9889; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
+    return message;
+  };
+}
+
+function getSmallheal() {
+  return function smallheal(caster, target) {
+    let name = 'smallheal';
+    let skillName = skills[name].name;
+    let mana = skills[name].manaCost;
+    let heal = getRandomBetween(10, 30);
+    let other = otherMember(caster, party);
+    let casterHeal = heal + Math.floor(caster.maxHp / 10);
+    let otherHeal = heal + Math.floor(other.maxHp / 10);
+    caster.hp += casterHeal;
+    other.hp += otherHeal;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128147; ${caster.name} acabou de utilizar ${skillName}. ${caster.name} foi curado em ${casterHeal} e também curou ${other.name} em ${otherHeal}.`;
+    return message;
+  };
+}
+
+function getSlash() {
+  return function slash(caster, target) {
+    let name = 'slash';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128481; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
+    return message;
+  };
+}
+
+function getArmorbreak() {
+  return function slash(caster, target) {
+    let name = 'armorbreak';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    target.armor -= 3;
+    damage = damage - targetArmor;
+    damage < 0 ? (damage = 0) : (damage = damage);
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]:&#128148; ${caster.name} se atirou para utilizar ${skillName} em ${target.name} para quebrar sua ${target.armorType}.  ${target.name} levou ${damage} de dano em seus hitpoins e teve sua armadura danificada. A armor atual de ${target.name} é ${target.armor}`;
+    return message;
+  };
+}
+
+function getShielded() {
+  return function shielded(caster, target) {
+    let name = 'shielded';
+    let skillName = skills[name].name;
+    let mana = skills[name].manaCost;
+    caster.mana -= mana;
+    let armorIncrease = getRandomBetween(3, 7);
+    caster.armor += armorIncrease;
+    let message = `[${turn}]: &#128170; ${caster.name} se concentra para utilizar ${skillName}. Magicamente sua ${caster.armorType} se aprimora em ${armorIncrease} pontos. A armor atual de ${caster.name} é de ${caster.armor}`;
+    return message;
+  };
+}
+
+function getUltraslash() {
+  return function ultraslash(caster, target) {
+    let name = 'ultraslash';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128481; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
+    return message;
+  };
+}
+
+function getWarriorrage() {
+  return function warriorrage(caster, target) {
+    let name = 'warriorrage';
+    let skillName = skills[name].name;
+    let mana = skills[name].manaCost;
+    caster.mana -= mana;
+    let message = `[${turn}]: ${caster.name} está sem ferimentos e mais calmo que o Batman, nada acontece.`;
+    if (caster.hp < caster.maxHp / 2) {
+      let strengthIncrease = getRandomBetween(30, caster.strength);
+      caster.strength += strengthIncrease;
+      message = `[${turn}]:&#128170 A dor de seus ferimentos afoga ${caster.name} em fúria. ${caster.name} está com sangue nozoi e ganha ${strengthIncrease} de strength`;
+    }
+    return message;
+  };
+}
+
+function getMagicsword() {
+  return function magicsword(caster, target) {
+    let name = 'magicsword';
+    let skillName = skills[name].name;
+    let max = skills[name].maxDamage.bind(this)();
+    let min = skills[name].minDamage.bind(this)();
+    let mana = skills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#9889; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
     return message;
   };
 }
@@ -610,11 +742,13 @@ function animateWarriorrage() {
     }, 1500);
 
     setTimeout(() => {
-      caster.DOM.effect.style.borderRadius = '0%';
-      caster.DOM.effect.style.opacity = 0.6;
-      caster.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/warrior-rage.gif)';
-      caster.DOM.effect.style.backgroundPosition = '0% 35%';
+      if (caster.hp < caster.maxHp / 2) {
+        caster.DOM.effect.style.borderRadius = '0%';
+        caster.DOM.effect.style.opacity = 0.6;
+        caster.DOM.effect.style.backgroundImage =
+          'url(Images/skill-animations/warrior-rage.gif)';
+        caster.DOM.effect.style.backgroundPosition = '0% 35%';
+      }
     }, 1500);
 
     setTimeout(() => {
