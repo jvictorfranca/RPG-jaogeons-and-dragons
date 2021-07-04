@@ -8,12 +8,13 @@
 /* Proprio game container */
 main {
   display: flex;
+  background-image: url(Images/Background/stone.jpg);
 }
 
 /* Container externo das de status, com barras que contam com com HP e MP dos player e do enemy, também com os ícones */
 
 #status-bars {
-  background-color: slateblue;
+  /* background-color: slateblue; */
   width: 100%;
   flex-wrap: wrap;
   height: 10%;
@@ -22,7 +23,7 @@ main {
 /* Container da mão de cartas do personagem */
 #hand {
   height: max-content;
-  background-color: yellow;
+  /* background-color: yellow; */
   height: 90%;
   width: 20%;
   display: flex;
@@ -149,7 +150,8 @@ main {
 }
 
 .bars-character {
-  background-color: lightgray;
+  background-color: rgba(211, 211, 211, 0.44);
+  border-radius: 10%;
   height: 80%;
   display: flex;
   width: 20%;
@@ -163,7 +165,6 @@ main {
 
 .hp-mana-box {
   height: 100%;
-  background-color: lightgray;
   width: 75%;
   display: flex;
   flex-direction: column;
@@ -227,7 +228,8 @@ main {
 }
 
 .bar-enemy {
-  background-color: rgb(95, 2, 2);
+  background-color: rgba(95, 2, 2, 0.583);
+  border-radius: 8%;
   height: 80%;
   display: flex;
   width: 55%;
@@ -241,7 +243,6 @@ main {
 
 .bar-enemy .hp-mana-box {
   height: 100%;
-  background-color: rgb(95, 2, 2);
   width: 100%;
   display: flex;
   flex-direction: column;

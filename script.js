@@ -928,6 +928,8 @@ function useSkill(skillName, caster, target) {
   let message;
   if (caster.mp < skills[skillName].manaCost) {
     message = `[${turn}]: ${caster.name} não possui mana para utilizar ${skills[skillName].name}`;
+    fixAllBars(combat);
+    writeBattle(message);
     //animação sem mana
   } else if (actions < skills[skillName].actions) {
     alert(`Você não possui ações para utilizar ${skills[skillName].name}`);
@@ -935,11 +937,11 @@ function useSkill(skillName, caster, target) {
     message = skills[skillName].skill.bind(caster)(caster, target);
     skills[skillName].animation(caster, target);
     actions -= skills[skillName].actions;
+    setTimeout(() => {
+      writeBattle(message);
+      fixAllBars(combat);
+    }, 3000);
   }
-  setTimeout(() => {
-    writeBattle(message);
-    fixAllBars(combat);
-  }, 3000);
 }
 
 //getPartyCardsArray: retorna uma array de objetos, com o primeira key player que é o indice do personagem na party e o segundo parametro card que é o nome da carta. Utiliza a skillList do personagem para fazer.
