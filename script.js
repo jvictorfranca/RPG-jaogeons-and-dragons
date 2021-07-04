@@ -512,8 +512,7 @@ function animateThunderbolt() {
       caster.DOM.effect.style.backgroundImage = 'none';
     }, 1500);
     setTimeout(() => {
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/thunderbolt.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.thunderbolt.style.animation})`;
     }, 1500);
     setTimeout(() => {
       target.DOM.effect.style.backgroundImage = 'none';
