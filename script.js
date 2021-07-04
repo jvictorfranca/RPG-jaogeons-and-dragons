@@ -532,8 +532,7 @@ function animateFirewall() {
     setTimeout(() => {
       target.DOM.effect.style.opacity = 0.8;
       target.DOM.effect.style.borderRadius = '40%';
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/firewall.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.firewall.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
