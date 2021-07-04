@@ -66,18 +66,22 @@ main {
 }
 
 .card div p {
-  font-size: 20px;
+  font-size: 22px;
   text-decoration: none;
 }
 
 /* Propriedades de Hover da #hand */
-#hand .card:hover {
+#hand .unturned:hover {
   opacity: 0.9;
   border: solid white;
   color: white;
 }
 
-#hand div.clard div:hover,
+.card:hover .card-mana-cost {
+  color: white;
+}
+
+#hand div.card div:hover,
 #hand p:hover {
   border: none;
 }
@@ -89,8 +93,9 @@ main {
 /* Cartas viradas */
 .turned {
   background-image: url(Images/cardBack/Backgorund.png);
-  background-size: cover;
-  background-size: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   background-color: rgb(5, 43, 5) !important;
   border: solid black;
 }

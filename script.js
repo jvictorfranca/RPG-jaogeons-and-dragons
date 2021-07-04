@@ -502,7 +502,7 @@ function getMagicsword() {
   };
 }
 
-//Funções de animação: Aqui ficarão as funções para animar as magias.  Novamente cada função retorna a função da animação, assim como no caso das funções de magia.
+//Funções de animação: Aqui ficarão as funções para animar as magias.  Novamente cada função retorna a função da animação, assim como no caso das funções de magia. Para utilizar: skills.skillName.animation(caster, target)
 
 function animateThunderbolt() {
   return function thunderboltAnimation(caster, target) {
@@ -667,6 +667,7 @@ function animateArmorbreak() {
       target.DOM.effect.style.backgroundImage =
         'url(Images/skill-animations/armor-break.gif)';
       target.DOM.effect.style.backgroundSize = 'contain';
+      target.DOM.effect.style.backgroundPosition = 'center';
     }, 1500);
 
     setTimeout(() => {
@@ -674,6 +675,7 @@ function animateArmorbreak() {
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
       target.DOM.effect.style.backgroundSize = 'cover';
+      target.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 3000);
   };
 }
@@ -985,7 +987,7 @@ function createButtonSkill(buttonDOM, skillName, caster) {
   });
 }
 
-// Função que cria um botão com um personagem e skills aleatórios a partir da função getPartyCardsArray. Pega player e magia aleatória que está na skillList do personagem
+//createButtonRandomPartySkill: Função que cria um botão com um personagem e skills aleatórios a partir da função getPartyCardsArray. Pega player e magia aleatória que está na skillList do personagem
 function createButtonRandonPartySkill(buttonDOM) {
   let array = getPartyCardsArray(party);
   let randomIndex = getRandomBetween(0, array.length - 1);
@@ -996,13 +998,40 @@ function createButtonRandonPartySkill(buttonDOM) {
   createButtonSkill(buttonDOM, skillName, caster);
 }
 
-//Função que para todos os botões(cartas) viradas (.turned) cria estilo e funcionalidade de magia aleatória com createButtonRandomPartySkill
+//unturnButtons: Função que para todos os botões(cartas) viradas (.turned) cria estilo e funcionalidade de magia aleatória com createButtonRandomPartySkill
 function unturnButtons() {
   let buttons = document.querySelectorAll('#hand .card.turned');
   buttons.forEach((button) => {
     createButtonRandonPartySkill(button);
   });
 }
+
+//actionColorTextButton: Função que muda a cor do botão para verde se poder utilizar a carta ou vermelho se não.
+const actionColorTextButton = (button) => {
+  let actionText = button.children[2].children[0];
+  if (actions >= parseInt(actionText.innerText)) {
+    actionText.style.color = 'green';
+  }
+  if (actions < parseInt(actionText.innerText)) {
+    actionText.style.color = 'red';
+  }
+};
+
+//Colore botões: Adiciona estilo aos botões que, quando passa-se o mouse sobre eles o action fica vermelhou ou verde se puder usar
+const coloreBotoes = () => {
+  let allButtons = document.querySelectorAll('#hand .card');
+  allButtons.forEach((button) => {
+    button.addEventListener('mouseover', () => {
+      actionColorTextButton(button);
+    });
+
+    button.addEventListener('mouseout', () => {
+      button.children[2].children[0].style.color = 'black';
+    });
+  });
+};
+//Utiliza a função coloreBotoes
+coloreBotoes();
 
 //Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
 const battleLog = document.querySelector('#console');

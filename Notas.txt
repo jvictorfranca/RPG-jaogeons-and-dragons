@@ -1,24 +1,15 @@
 
-usar .bind() e um objeto de skills com .bind
- https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
- 
- Da para brincar com objetos com target.
+
  Utilizar array.include  type.includes('fire')
  https://www.w3schools.com/jsref/jsref_includes_array.asp
- Utilizar remove event listener.
- https://stackoverflow.com/questions/28610365/how-can-i-add-an-event-for-a-one-time-click-to-a-function    (cuidado, pode remover todos)
- https://developer.mozilla.org/pt-BR/docs/Web/API/EventTarget/removeEventListener
- https://www.w3schools.com/jsref/met_element_removeeventlistener.asp
-
+ 
 
 Usar foreach e filter na party para ver quem morreu. Foreach muda as barras e poe os indices numa array e DEPOIS tira todos os indices
 
 
-Fazer função de magia retornar true ou false e so fazer animação se for true
 
 
-
-
+Fazer um A com setinha para mostrar battleLOG (html internal link)
 
 
 
@@ -34,6 +25,10 @@ EMOJIS: https://www.w3schools.com/charsets/ref_emoji.asp
 https://www.w3schools.com/html/html_emojis.asp
 
 
+
+
+Se for fazer party com 3 membros: Problema no small heal, tem que refatorar todas as skills. Skills vai virar skillPropriety e animation continua animation, então cria uma skill que junta as 2, property e animation. Usaskill usaria essa skill e não combinaria a property com a animation mais, assim daria para fazer o otherplayer da animation e o da skillProperty o mesmo
+Futuro: importar o fontAwesome para utilizar o icone das skills, muito brabo. (deixar icone branco quando da hover)
 
 FEITAS:
 Ter um jeito de fazer Max damage.. (usar this no max damage e função, quando chamar usa o .bind())
@@ -51,3 +46,13 @@ Mudar turn para action e fazer uma variavel turn para logar no console.
 
 Usar o DOM elements como chave e valor de cada personagem, para conseguir acessar. Utilizar em funções de inicio de jogo.
 
+
+usar .bind() e um objeto de skills com .bind
+ https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+ 
+ Da para brincar com objetos com target.
+
+Utilizar remove event listener.
+ https://stackoverflow.com/questions/28610365/how-can-i-add-an-event-for-a-one-time-click-to-a-function    (cuidado, pode remover todos)
+ https://developer.mozilla.org/pt-BR/docs/Web/API/EventTarget/removeEventListener
+ https://www.w3schools.com/jsref/met_element_removeeventlistener.asp
