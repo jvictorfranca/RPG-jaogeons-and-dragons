@@ -71,13 +71,13 @@ main {
 }
 
 /* Propriedades de Hover da #hand */
-#hand :hover {
+#hand .card:hover {
   opacity: 0.9;
   border: solid white;
   color: white;
 }
 
-#hand div div:hover,
+#hand div.clard div:hover,
 #hand p:hover {
   border: none;
 }
@@ -313,6 +313,7 @@ main {
   position: absolute;
   background-image: url(Images/character-animations/dragon2.gif);
   background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
 }
 
