@@ -25,12 +25,15 @@ checkCount = () => {
 const total = {
   logaoi: logaOI,
   logaxau: logaXAU,
+  valor: 12,
 };
 
 const endTurn = () => {
   if (count >= 3) {
     Object.values(total).forEach((value) => {
-      value.call();
+      if (typeof value === 'function') {
+        value.call();
+      }
     });
     count = 0;
     console.log(count);

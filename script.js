@@ -5,14 +5,14 @@ const getRandomBetween = (min, max) => {
   let answer = Math.floor(Math.random() * (max - min + 1)) + min;
   return answer;
 };
-// writeBattle: para criar um
+// writeBattle: para criar um P no battle log com uma string (mensagem)
 const writeBattle = (message) => {
   p = document.createElement('p');
   p.innerHTML = message;
   battleLog.appendChild(p);
 };
 
-//otherMember para pegar outro membro da party (se houver)
+//otherMember para pegar outro membro da party (se houver), se não houver retorna o mesmo membro (atual)
 const otherMember = (actual, array) => {
   let answer = actual;
   if (array.length === 1) {
@@ -200,7 +200,7 @@ const skills = {
     },
     manaCost: 0,
     quantity: 7,
-    type: 'physical damage',
+    type: 'Physical damage',
     actions: 1,
     style: {
       icon: 'Images/skills-icons/slash.png',
@@ -304,8 +304,8 @@ const skills = {
   },
 };
 
-//Funções de Magia: Aqui ficam as funções para a realização de cada magia. Vale lembrar que cada função retorna a função da própria magia, então para acessa-la deve-se utilizar skills.magia.skill
-//Lembrar de tirar os coments das skills e arrumar o getthunderBolt
+//Funções de Magia: Aqui ficam as funções para a realização de cada magia. Vale lembrar que cada função retorna a função da própria magia, então para acessa-la deve-se utilizar skills.magia.skill.
+//OBS: Algumas skills usam this() para retornar máximo e mínimo. Isso sói funciona se for utilizado o .bind(objeto) quando for chamar a skill. Ex: skill.brind(caster)
 
 function getThunderbolt() {
   return function thunderbolt(caster, target) {
@@ -919,27 +919,101 @@ const fixAllBars = (battleCharacters) => {
   battleCharacters.forEach((character) => {
     fixBars(character);
   });
+  actionsDisplay.innerText = actions;
 };
 
-//useSkill: Função para usar uma magia específica. Já poe o .bind
-//OBS: futuramente vai checar mana, tirar OBS
+//useSkill: Função para usar uma magia específica. Já poe o .bind . OBS: O .bind é porque em skills o máximo e mínimo retornam this(). Checa mana do personagem e ações. SkillName é uma string
 
 function useSkill(skillName, caster, target) {
-  let message = skills[skillName].skill.bind(caster)(caster, target);
-  skills[skillName].animation(caster, target);
-
+  let message;
+  if (caster.mp < skills[skillName].manaCost) {
+    message = `[${turn}]: ${caster.name} não possui mana para utilizar ${skills[skillName].name}`;
+    //animação sem mana
+  } else if (actions < skills[skillName].actions) {
+    alert(`Você não possui ações para utilizar ${skills[skillName].name}`);
+  } else {
+    message = skills[skillName].skill.bind(caster)(caster, target);
+    skills[skillName].animation(caster, target);
+    actions -= skills[skillName].actions;
+  }
   setTimeout(() => {
     writeBattle(message);
     fixAllBars(combat);
   }, 3000);
 }
 
+//getPartyCardsArray: retorna uma array de objetos, com o primeira key player que é o indice do personagem na party e o segundo parametro card que é o nome da carta. Utiliza a skillList do personagem para fazer.
+const getPartyCardsArray = () => {
+  let array = [];
+
+  party.forEach((player, pIndex) => {
+    let pArray = getCards(player);
+    pArray.forEach((card) => {
+      let obj = {};
+      obj.player = pIndex;
+      obj.card = card;
+      array.push(obj);
+    });
+  });
+
+  return array;
+};
+
+//createButtonCard : Função que com o elemento botão DOM (carta no jogo), nome da magia e personagem. Cria o estilo do botão. Cria apenas o estilo da card .card
+function createButtonCard(buttonDOM, skillName, caster) {
+  let skill = skills[skillName];
+  buttonDOM.classList = 'card unturned';
+  buttonDOM.style.backgroundColor = caster.style.color;
+  buttonDOM.children[0].innerText = skill.name;
+  buttonDOM.children[1].src = skill.style.icon;
+  buttonDOM.children[2].children[0].innerText = skill.actions;
+  buttonDOM.children[2].children[1].innerText = skill.manaCost;
+  buttonDOM.children[2].children[2].innerText = skill.type;
+}
+
+// Função que cria, além do estilo utilizando a createButtonCard, cria a funcionalidade de skill no botão.
+function createButtonSkill(buttonDOM, skillName, caster) {
+  createButtonCard(buttonDOM, skillName, caster);
+  buttonDOM.addEventListener('click', function func() {
+    if (actions >= skills[skillName].actions) {
+      buttonDOM.classList = 'card turned';
+      buttonDOM.removeEventListener('click', func);
+    }
+    useSkill(skillName, caster, enemy);
+  });
+}
+
+// Função que cria um botão com um personagem e skills aleatórios a partir da função getPartyCardsArray. Pega player e magia aleatória que está na skillList do personagem
+function createButtonRandonPartySkill(buttonDOM) {
+  let array = getPartyCardsArray(party);
+  let randomIndex = getRandomBetween(0, array.length - 1);
+  let partyObj = array[randomIndex];
+  let caster = party[partyObj.player];
+  let skillName = partyObj.card;
+
+  createButtonSkill(buttonDOM, skillName, caster);
+}
+
+//Função que para todos os botões(cartas) viradas (.turned) cria estilo e funcionalidade de magia aleatória com createButtonRandomPartySkill
+function unturnButtons() {
+  let buttons = document.querySelectorAll('#hand .card.turned');
+  buttons.forEach((button) => {
+    createButtonRandonPartySkill(button);
+  });
+}
+
 //Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
 const battleLog = document.querySelector('#console');
+const actionsDisplay = document.querySelector('#actions');
 //cardsInHand: Seletor para as cartas (3) que são a mão do jogador.
 let cardsInHand = document.querySelectorAll('#hand .card');
 
 //Inicio de jogo: Aqui é onde o jogo é iniciado e personagens são criados.
+
+//Começa a contagem de turnos e ações restantes:
+let turn = 1;
+let actions = 2;
+
 //Cria os personagens 1 e 2 e inimigo
 const player1 = chooseClass('warrior');
 const player2 = chooseClass('mage');
@@ -952,13 +1026,13 @@ createDOM2(player2);
 //Cria objetos DOM do enemy
 createDOMenemy(enemy);
 
-//Cria as arrays de party(aliados) e combat(aliados e inimigo)
+//Cria as arrays de party(aliados) e combat(aliados e inimigo), além da array de deadPlayers
 let party = [player1, player2];
 let combat = [player1, player2, enemy];
+let deadPlayers = [];
 
 //Arruma as barras de vida
 fixAllBars(combat);
 
-//Começa a contagem de turnos e ações restantes:
-let turn = 1;
-let actions = 2;
+//Vira as cartas .turned
+unturnButtons();
