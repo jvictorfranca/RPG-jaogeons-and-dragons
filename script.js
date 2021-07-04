@@ -242,7 +242,7 @@ const skills = {
     actions: 1,
     style: {
       icon: 'Images/skills-icons/shielded.png',
-      animation: 'Images/skill-animations/shielded.gif',
+      animation: 'Images/skill-animations/shileded.gif',
     },
   },
   ultraslash: {
@@ -553,8 +553,7 @@ function animateFreeze() {
     }, 1500);
 
     setTimeout(() => {
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/freeze.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.freeze.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
@@ -576,8 +575,7 @@ function animateBlackfire() {
 
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/black-fire.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.blackfire.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
@@ -602,14 +600,12 @@ function animateSmallheal() {
 
     setTimeout(() => {
       caster.DOM.effect.style.borderRadius = '0';
-      caster.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/small-heal.gif)';
+      caster.DOM.effect.style.backgroundImage = `url(${skills.smallheal.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
       other.DOM.effect.style.borderRadius = '0';
-      other.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/small-heal.gif)';
+      other.DOM.effect.style.backgroundImage = `url(${skills.smallheal.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
@@ -638,8 +634,7 @@ function animateSlash() {
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
       target.DOM.effect.style.opacity = 0.6;
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/slash.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.slash.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
@@ -662,8 +657,7 @@ function animateArmorbreak() {
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
       target.DOM.effect.style.opacity = 0.6;
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/armor-break.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.armorbreak.style.animation})`;
       target.DOM.effect.style.backgroundSize = 'contain';
       target.DOM.effect.style.backgroundPosition = 'center';
     }, 1500);
@@ -692,8 +686,7 @@ function animateshielded() {
       caster.DOM.effect.style.borderRadius = '100%';
       caster.DOM.effect.style.opacity = 0.5;
       caster.DOM.effect.style.backgroundPosition = '40% 50%';
-      caster.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/shilded.gif)';
+      caster.DOM.effect.style.backgroundImage = `url(${skills.shielded.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
@@ -718,8 +711,7 @@ function animateUltraslash() {
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '50%';
       target.DOM.effect.style.opacity = 0.7;
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/ultra-slash.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.ultraslash.style.animation})`;
       target.DOM.effect.style.backgroundPosition = '40% 50%';
     }, 1500);
 
@@ -745,8 +737,7 @@ function animateWarriorrage() {
       if (caster.hp < caster.maxHp / 2) {
         caster.DOM.effect.style.borderRadius = '0%';
         caster.DOM.effect.style.opacity = 0.6;
-        caster.DOM.effect.style.backgroundImage =
-          'url(Images/skill-animations/warrior-rage.gif)';
+        caster.DOM.effect.style.backgroundImage = `url(${skills.warriorrage.style.animation})`;
         caster.DOM.effect.style.backgroundPosition = '0% 35%';
       }
     }, 1500);
@@ -771,8 +762,7 @@ function animateMagicsword() {
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
       target.DOM.effect.style.opacity = 0.8;
-      target.DOM.effect.style.backgroundImage =
-        'url(Images/skill-animations/magic-sword.gif)';
+      target.DOM.effect.style.backgroundImage = `url(${skills.magicsword.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
