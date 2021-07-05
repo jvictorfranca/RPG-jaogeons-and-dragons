@@ -738,7 +738,7 @@ function animateWarriorrage() {
         caster.DOM.effect.style.borderRadius = '0%';
         caster.DOM.effect.style.opacity = 0.6;
         caster.DOM.effect.style.backgroundImage = `url(${skills.warriorrage.style.animation})`;
-        caster.DOM.effect.style.backgroundPosition = '0% 35%';
+        caster.DOM.effect.style.backgroundPosition = 'center';
       }
     }, 1500);
 
@@ -782,12 +782,12 @@ function animateFireclaws() {
 
     setTimeout(() => {
       caster.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+      caster.DOM.effect.style.backgroundPosition = 'center';
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
-      target.DOM.effect.style.opacity = 0.7;
+      target.DOM.effect.style.opacity = 0.6;
       target.DOM.effect.style.backgroundImage = `url(${monsterSkills.fireclaws.style.animation})`;
       target.DOM.effect.style.backgroundPosition = 'center';
     }, 1500);
@@ -805,25 +805,21 @@ function animateWinghurricane() {
   return function fireclawsAnimation(caster, target) {
     caster.DOM.effect.style.backgroundImage =
       'url(Images/skill-animations/using.gif)';
-    caster.DOM.effect.style.backgroundPosition = 'center';
 
     setTimeout(() => {
       caster.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
       target.DOM.effect.style.opacity = 0.4;
       target.DOM.effect.style.backgroundImage = `url(${monsterSkills.winghurricane.style.animation})`;
-      target.DOM.effect.style.backgroundPosition = 'center';
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.opacity = 1;
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 3000);
   };
 }
@@ -832,25 +828,21 @@ function animateDragonstrongfirebreath() {
   return function fireclawsAnimation(caster, target) {
     caster.DOM.effect.style.backgroundImage =
       'url(Images/skill-animations/using-special.gif)';
-    caster.DOM.effect.style.backgroundPosition = 'center';
 
     setTimeout(() => {
       caster.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
       target.DOM.effect.style.opacity = 0.7;
       target.DOM.effect.style.backgroundImage = `url(${monsterSkills.dragonstrongfirebreath.style.animation})`;
-      target.DOM.effect.style.backgroundPosition = 'center';
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.opacity = 1;
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 3000);
   };
 }
@@ -859,25 +851,20 @@ function animateDragonfirebite() {
   return function dragonfirebiteAnimation(caster, target) {
     caster.DOM.effect.style.backgroundImage =
       'url(Images/skill-animations/using.gif)';
-    caster.DOM.effect.style.backgroundPosition = 'center';
-
     setTimeout(() => {
       caster.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '60%';
       target.DOM.effect.style.opacity = 0.7;
       target.DOM.effect.style.backgroundImage = `url(${monsterSkills.dragonfirebite.style.animation})`;
-      target.DOM.effect.style.backgroundPosition = 'center';
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.opacity = 1;
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 2500);
   };
 }
