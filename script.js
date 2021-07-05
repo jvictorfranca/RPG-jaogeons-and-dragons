@@ -746,6 +746,7 @@ function animateWarriorrage() {
       caster.DOM.effect.style.opacity = 1;
       caster.DOM.effect.style.borderRadius = '0';
       caster.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 3000);
   };
 }
@@ -769,6 +770,56 @@ function animateMagicsword() {
       target.DOM.effect.style.opacity = 1;
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
+    }, 3000);
+  };
+}
+
+function animateFireclaws() {
+  return function fireclawsAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '100%';
+      target.DOM.effect.style.opacity = 0.7;
+      target.DOM.effect.style.backgroundImage = `url(${monsterSkills.fireclaws.style.animation})`;
+      target.DOM.effect.style.backgroundPosition = 'center';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+    }, 2300);
+  };
+}
+
+function animateWinghurricane() {
+  return function fireclawsAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '100%';
+      target.DOM.effect.style.opacity = 0.4;
+      target.DOM.effect.style.backgroundImage = `url(${monsterSkills.winghurricane.style.animation})`;
+      target.DOM.effect.style.backgroundPosition = 'center';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 3000);
   };
 }
@@ -807,6 +858,111 @@ const monsters = {
     },
   },
 };
+
+//MonsterSkills : aqui fica a constante de skills de monstros.
+const monsterSkills = {
+  fireclaws: {
+    name: 'Fire claws',
+    // skill: getFireclaws(),
+    animation: animateFireclaws(),
+    minDamage: function () {
+      return 10;
+    },
+    maxDamage: function () {
+      return this.inteligence;
+    },
+    manaCost: 30,
+    quantity: 7,
+    type: 'Physical damage',
+    actions: 1,
+    style: {
+      icon: 'Images/skills-icons/fireclaws.png',
+      animation: 'Images/skill-animations/fire-claws.gif',
+    },
+  },
+
+  winghurricane: {
+    name: 'Wing hurricane',
+    // skill: getWinghurricane(),
+    animation: animateWinghurricane(),
+    minDamage: function () {
+      return 5;
+    },
+    maxDamage: function () {
+      return this.inteligence / 2;
+    },
+    manaCost: 30,
+    quantity: 3,
+    type: 'Magic damage',
+    actions: 1,
+    style: {
+      icon: 'Images/skills-icons/wing-hurricane.png',
+      animation: 'Images/skill-animations/wing-hurricane.gif',
+    },
+  },
+
+  dragonstrongfirebreath: {
+    name: 'Dragon strong firebreath',
+    // skill: getFireclaws(),
+    // animation: animateFireclaws(),
+    minDamage: function () {
+      return 50;
+    },
+    maxDamage: function () {
+      return this.inteligence * 2.5;
+    },
+    manaCost: 30,
+    quantity: 1,
+    type: 'S+ magic damage',
+    actions: 1,
+    style: {
+      icon: 'Images/skills-icons/dragon-strong-firebreath.png',
+      animation: 'Images/skill-animations/dragon-strong-firebreath.gif',
+    },
+  },
+
+  dragonfirebite: {
+    name: 'Dragon fire bite',
+    // skill: getFireclaws(),
+    // animation: animateFireclaws(),
+    minDamage: function () {
+      return 0;
+    },
+    maxDamage: function () {
+      return this.inteligence;
+    },
+    manaCost: 30,
+    quantity: 5,
+    type: 'Magic damage',
+    actions: 1,
+    style: {
+      icon: 'Images/skills-icons/dragon-firebite.png',
+      animation: 'Images/skill-animations/dragon-firebite.gif',
+    },
+  },
+
+  firewall: {
+    name: 'Fire wall',
+    // skill: getFirewall(),
+    animation: animateFirewall(),
+    minDamage: function () {
+      return 10;
+    },
+    maxDamage: function () {
+      return 1.5 * this.inteligence;
+    },
+    manaCost: 35,
+    quantity: 4,
+    type: 'Magic damage',
+    actions: 1,
+    style: {
+      icon: 'Images/skills-icons/fire.png',
+      animation: 'Images/skill-animations/firewall.gif',
+    },
+  },
+};
+
+//OBS: As animações das skills de monstro é comum às animações das demais skills, só o dano da skill e efeitos que não.
 
 //Funções de início de jogo: Aqui ficam as funções para utilizar na criação de um novo game
 //choseClass: Define qual classe os players 1 e 2 será, entre mage e warrior.
