@@ -3,7 +3,7 @@
 //getRandomBetween: Retorna um valor entre um número mínimo e um máximo.
 const getRandomBetween = (min, max) => {
   let answer = Math.floor(Math.random() * (max - min + 1)) + min;
-  return answer;
+  return Math.round(answer);
 };
 // writeBattle: para criar um P no battle log com uma string (mensagem)
 const writeBattle = (message) => {
@@ -387,12 +387,11 @@ function getBlackfire() {
 }
 
 function getSmallheal() {
-  return function smallheal(caster, target) {
+  return function smallheal(caster, target, other) {
     let name = 'smallheal';
     let skillName = skills[name].name;
     let mana = skills[name].manaCost;
     let heal = getRandomBetween(10, 30);
-    let other = otherMember(caster, party);
     let casterHeal = heal + Math.floor(caster.maxHp / 10);
     let otherHeal = heal + Math.floor(other.maxHp / 10);
     caster.hp += casterHeal;
@@ -587,8 +586,7 @@ function animateBlackfire() {
 }
 
 function animateSmallheal() {
-  return function smallhealAnimation(caster, target) {
-    let other = otherMember(caster, party);
+  return function smallhealAnimation(caster, target, other) {
     target = target;
 
     caster.DOM.effect.style.backgroundImage =
@@ -778,9 +776,11 @@ function animateFireclaws() {
   return function fireclawsAnimation(caster, target) {
     caster.DOM.effect.style.backgroundImage =
       'url(Images/skill-animations/using.gif)';
+    caster.DOM.effect.style.backgroundPosition = 'center';
 
     setTimeout(() => {
       caster.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 1500);
 
     setTimeout(() => {
@@ -803,9 +803,11 @@ function animateWinghurricane() {
   return function fireclawsAnimation(caster, target) {
     caster.DOM.effect.style.backgroundImage =
       'url(Images/skill-animations/using.gif)';
+    caster.DOM.effect.style.backgroundPosition = 'center';
 
     setTimeout(() => {
       caster.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 1500);
 
     setTimeout(() => {
@@ -821,6 +823,60 @@ function animateWinghurricane() {
       target.DOM.effect.style.backgroundImage = 'none';
       caster.DOM.effect.style.backgroundPosition = '0% 0%';
     }, 3000);
+  };
+}
+
+function animateDragonstrongfirebreath() {
+  return function fireclawsAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using-special.gif)';
+    caster.DOM.effect.style.backgroundPosition = 'center';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '100%';
+      target.DOM.effect.style.opacity = 0.7;
+      target.DOM.effect.style.backgroundImage = `url(${monsterSkills.dragonstrongfirebreath.style.animation})`;
+      target.DOM.effect.style.backgroundPosition = 'center';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+    }, 3000);
+  };
+}
+
+function animateDragonfirebite() {
+  return function dragonfirebiteAnimation(caster, target) {
+    caster.DOM.effect.style.backgroundImage =
+      'url(Images/skill-animations/using.gif)';
+    caster.DOM.effect.style.backgroundPosition = 'center';
+
+    setTimeout(() => {
+      caster.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.borderRadius = '60%';
+      target.DOM.effect.style.opacity = 0.7;
+      target.DOM.effect.style.backgroundImage = `url(${monsterSkills.dragonfirebite.style.animation})`;
+      target.DOM.effect.style.backgroundPosition = 'center';
+    }, 1500);
+
+    setTimeout(() => {
+      target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundImage = 'none';
+      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+    }, 2500);
   };
 }
 
@@ -869,7 +925,7 @@ const monsterSkills = {
       return 10;
     },
     maxDamage: function () {
-      return this.inteligence;
+      return this.strength / 1.5;
     },
     manaCost: 30,
     quantity: 7,
@@ -880,7 +936,6 @@ const monsterSkills = {
       animation: 'Images/skill-animations/fire-claws.gif',
     },
   },
-
   winghurricane: {
     name: 'Wing hurricane',
     // skill: getWinghurricane(),
@@ -900,11 +955,10 @@ const monsterSkills = {
       animation: 'Images/skill-animations/wing-hurricane.gif',
     },
   },
-
   dragonstrongfirebreath: {
     name: 'Dragon strong firebreath',
-    // skill: getFireclaws(),
-    // animation: animateFireclaws(),
+    // skill: getDragonstrongfirebreath(),
+    animation: animateDragonstrongfirebreath(),
     minDamage: function () {
       return 50;
     },
@@ -920,11 +974,10 @@ const monsterSkills = {
       animation: 'Images/skill-animations/dragon-strong-firebreath.gif',
     },
   },
-
   dragonfirebite: {
     name: 'Dragon fire bite',
     // skill: getFireclaws(),
-    // animation: animateFireclaws(),
+    animation: animateDragonfirebite(),
     minDamage: function () {
       return 0;
     },
@@ -940,7 +993,6 @@ const monsterSkills = {
       animation: 'Images/skill-animations/dragon-firebite.gif',
     },
   },
-
   firewall: {
     name: 'Fire wall',
     // skill: getFirewall(),
@@ -965,12 +1017,12 @@ const monsterSkills = {
 //OBS: As animações das skills de monstro é comum às animações das demais skills, só o dano da skill e efeitos que não.
 
 //Funções de início de jogo: Aqui ficam as funções para utilizar na criação de um novo game
-//choseClass: Define qual classe os players 1 e 2 será, entre mage e warrior.
+//choseClass: Define qual classe os players 1 e 2 será, entre mage e warrior. player1 = chooseClass('mage')
 const chooseClass = (className) => {
   return Object.assign({}, classes[className]);
 };
 
-//chooseEnemy: Define qual monstro será o inimigo. Apenas dragon
+//chooseEnemy: Define qual monstro será o inimigo. Apenas dragon por enquanto. enemy = chooseEnemy('dragon')
 const chooseEnemy = (monster) => {
   return Object.assign({}, monsters[monster]);
 };
@@ -1072,6 +1124,7 @@ const fixAllBars = (battleCharacters) => {
 
 function useSkill(skillName, caster, target) {
   let message;
+  let other = otherMember(caster, party);
   if (caster.mp < skills[skillName].manaCost) {
     message = `[${turn}]: ${caster.name} não possui mana para utilizar ${skills[skillName].name}`;
     fixAllBars(combat);
@@ -1080,8 +1133,8 @@ function useSkill(skillName, caster, target) {
   } else if (actions < skills[skillName].actions) {
     alert(`Você não possui ações para utilizar ${skills[skillName].name}`);
   } else {
-    message = skills[skillName].skill.bind(caster)(caster, target);
-    skills[skillName].animation(caster, target);
+    message = skills[skillName].skill.bind(caster)(caster, target, other);
+    skills[skillName].animation(caster, target, other);
     actions -= skills[skillName].actions;
     setTimeout(() => {
       writeBattle(message);
