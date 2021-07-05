@@ -52,7 +52,7 @@ const classes = {
     equips: ['robe', 'lether-boots', 'scepter'],
     skillsList: ['thunderbolt', 'firewall', 'freeze', 'blackfire', 'smallheal'],
     style: {
-      icon: 'Images / CharacterIcons / Mage.png',
+      icon: 'Images/CharacterIcons/Mage.png',
       color: 'rgb(43, 80, 172)',
       animation: 'Images/character-animations/mage1.gif',
       attackAnimation: 'Images/character-animations/mage1.gif',
@@ -83,7 +83,7 @@ const classes = {
       'magicsword',
     ],
     style: {
-      icon: 'Images / CharacterIcons / Warrior.png',
+      icon: 'Images/CharacterIcons/Warrior.png',
       color: 'rgb(85, 44, 44)',
       animation: 'Images/character-animations/warior1.gif',
       attackAnimation: 'Images/character-animations/warior1.gif',
@@ -360,7 +360,7 @@ function getFreeze() {
     target.hp -= damage;
     caster.mp -= mana;
     let message = `[${turn}]: &#9889; ${caster.name} acabou de utilizar ${skillName} em ${target.name} que levou ${damage} de dano. A vida atual de ${target.name} é ${target.hp}.`;
-    let effect = rollPercentage(20);
+    let effect = rollPercentage(40);
     if (effect === true) {
       target.strength -= 10;
       message += ` &#128148; ${target.name} está congelando e perdeu 10 de strength. Sua strength atual é de ${target.strength}.`;
@@ -632,11 +632,13 @@ function animateSlash() {
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '100%';
       target.DOM.effect.style.opacity = 0.6;
+      target.DOM.effect.style.backgroundSize = 'cover';
       target.DOM.effect.style.backgroundImage = `url(${skills.slash.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
       target.DOM.effect.style.opacity = 1;
+      target.DOM.effect.style.backgroundSize = 'contain';
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
     }, 3000);
@@ -683,13 +685,13 @@ function animateshielded() {
     setTimeout(() => {
       caster.DOM.effect.style.borderRadius = '100%';
       caster.DOM.effect.style.opacity = 0.5;
+      caster.DOM.effect.style.backgroundSize = 'cover';
       caster.DOM.effect.style.backgroundPosition = '40% 50%';
       caster.DOM.effect.style.backgroundImage = `url(${skills.shielded.style.animation})`;
     }, 1500);
 
     setTimeout(() => {
       caster.DOM.effect.style.opacity = 1;
-      caster.DOM.effect.style.backgroundSize = 'cover';
       caster.DOM.effect.style.backgroundPosition = '0% 0%';
       caster.DOM.effect.style.borderRadius = '0';
       caster.DOM.effect.style.backgroundImage = 'none';
@@ -907,7 +909,7 @@ const monsters = {
       'firewall',
     ],
     style: {
-      icon: 'Images / CharacterIcons / Images/CharacterIcons/Dragon.png',
+      icon: 'Images/CharacterIcons/Dragon.png',
       color: 'rgb(100, 66, 104)',
       animation: 'Images/character-animations/dragon2.gif',
       attackAnimation: 'Images/character-animations/dragon2.gif',
@@ -1036,6 +1038,7 @@ const createDOM1 = (player1) => {
     hpText: document.querySelector('#character1-bar .hp-text'),
     mp: document.querySelector('#character1-bar .mp'),
     mpText: document.querySelector('#character1-bar .mp-text'),
+    img: document.querySelector('#character1-bar img'),
   };
 };
 
@@ -1048,6 +1051,7 @@ const createDOM2 = (player2) => {
     hpText: document.querySelector('#character2-bar .hp-text'),
     mp: document.querySelector('#character2-bar .mp'),
     mpText: document.querySelector('#character2-bar .mp-text'),
+    img: document.querySelector('#character2-bar img'),
   };
 };
 
@@ -1058,7 +1062,14 @@ const createDOMenemy = (enemy) => {
     effect: document.querySelector('#enemy .effect'),
     hp: document.querySelector('#enemy-bar .hp'),
     hpText: document.querySelector('#enemy-bar .hp-text'),
+    img: document.querySelector('#enemy-bar img'),
   };
+};
+
+const generateCharacter = (character) => {
+  character.DOM.img.src = character.style.icon;
+  character.DOM.img.style.backgroundColor = character.style.color;
+  character.DOM.character.style.backgroundImage = `url(${character.style.animation})`;
 };
 
 //Funções de jogo: Aqui ficaram as funções para utilizar no game.
@@ -1160,6 +1171,17 @@ const getPartyCardsArray = () => {
   return array;
 };
 
+//animationTurned: função que anima um botão quando clicado para a carta virar turned
+const animateTurned = (button) => {
+  button.style.backgroundImage = 'url(Images/cardBack/smokeAnimation.gif)';
+  button.style.backgroundSize = 'cover';
+
+  setTimeout(() => {
+    button.style.backgroundSize = 'contain';
+    button.style.backgroundImage = 'url(Images/cardBack/Backgorund.png)';
+  }, 500);
+};
+
 //createButtonCard : Função que com o elemento botão DOM (carta no jogo), nome da magia e personagem. Cria o estilo do botão. Cria apenas o estilo da card .card
 function createButtonCard(buttonDOM, skillName, caster) {
   let skill = skills[skillName];
@@ -1179,6 +1201,7 @@ function createButtonSkill(buttonDOM, skillName, caster) {
     if (actions >= skills[skillName].actions) {
       buttonDOM.classList = 'card turned';
       buttonDOM.removeEventListener('click', func);
+      animateTurned(buttonDOM);
     }
     useSkill(skillName, caster, enemy);
   });
@@ -1253,6 +1276,11 @@ createDOM2(player2);
 
 //Cria objetos DOM do enemy
 createDOMenemy(enemy);
+
+//Gera as animações dos personagens e inimigos
+generateCharacter(player1);
+generateCharacter(player2);
+generateCharacter(enemy);
 
 //Cria as arrays de party(aliados) e combat(aliados e inimigo), além da array de deadPlayers
 let party = [player1, player2];
