@@ -1428,6 +1428,11 @@ const callEndTurn = () => {
       endTurn[key].call();
     }
   });
+  let handCover = document.querySelector('#handcover');
+  handCover.style.display = 'block';
+  setTimeout(() => {
+    handCover.style.display = 'none';
+  }, 8500);
 };
 
 //Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.

@@ -362,3 +362,11 @@ main {
   color: purple;
   font-weight: 800;
 }
+
+#handcover {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.33);
+  width: 20%;
+  height: 90%;
+  display: none;
+}
