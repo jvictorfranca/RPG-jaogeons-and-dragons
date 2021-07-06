@@ -41,8 +41,8 @@ const classes = {
     agility: 20,
     inteligence: 60,
     strength: 10,
-    maxHp: 150,
-    hp: 150,
+    maxHp: 200,
+    hp: 200,
     maxMp: 300,
     mp: 300,
     armor: 15,
@@ -667,7 +667,7 @@ function animateArmorbreak() {
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
       target.DOM.effect.style.backgroundSize = 'cover';
-      target.DOM.effect.style.backgroundPosition = '0% 0%';
+      target.DOM.effect.style.backgroundPosition = 'center';
     }, 3000);
   };
 }
@@ -692,7 +692,7 @@ function animateshielded() {
 
     setTimeout(() => {
       caster.DOM.effect.style.opacity = 1;
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+      caster.DOM.effect.style.backgroundPosition = 'center';
       caster.DOM.effect.style.borderRadius = '0';
       caster.DOM.effect.style.backgroundImage = 'none';
     }, 3000);
@@ -719,7 +719,7 @@ function animateUltraslash() {
       target.DOM.effect.style.opacity = 1;
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
-      target.DOM.effect.style.backgroundPosition = '0% 0%';
+      target.DOM.effect.style.backgroundPosition = 'center';
     }, 4000);
   };
 }
@@ -746,7 +746,7 @@ function animateWarriorrage() {
       caster.DOM.effect.style.opacity = 1;
       caster.DOM.effect.style.borderRadius = '0';
       caster.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+      caster.DOM.effect.style.backgroundPosition = 'center';
     }, 3000);
   };
 }
@@ -796,7 +796,7 @@ function animateFireclaws() {
       target.DOM.effect.style.opacity = 1;
       target.DOM.effect.style.borderRadius = '0';
       target.DOM.effect.style.backgroundImage = 'none';
-      caster.DOM.effect.style.backgroundPosition = '0% 0%';
+      caster.DOM.effect.style.backgroundPosition = 'center';
     }, 2300);
   };
 }
@@ -857,6 +857,7 @@ function animateDragonfirebite() {
 
     setTimeout(() => {
       target.DOM.effect.style.borderRadius = '60%';
+      target.DOM.effect.style.backgroundSize = 'cover';
       target.DOM.effect.style.opacity = 0.7;
       target.DOM.effect.style.backgroundImage = `url(${monsterSkills.dragonfirebite.style.animation})`;
     }, 1500);
@@ -864,6 +865,7 @@ function animateDragonfirebite() {
     setTimeout(() => {
       target.DOM.effect.style.opacity = 1;
       target.DOM.effect.style.borderRadius = '0';
+      target.DOM.effect.style.backgroundSize = 'contain';
       target.DOM.effect.style.backgroundImage = 'none';
     }, 2500);
   };
@@ -1392,14 +1394,61 @@ const monsterActions = () => {
       useMonsterskill(skill2, enemy, target2);
     }, 3500);
   }
-  return skill1;
+};
+
+//Funções para endOfTurn: Funções para serem utilizadas especificamente no objeto endOfturn (bem abaixo)
+//addActions: Adiciona 2 ações
+const addActions = () => {
+  setTimeout(() => {
+    actions += 2;
+    turn += 1;
+  }, 8000);
+};
+
+//addTurn : Soma 1 ao turno.
+
+//combatFixAllBars : Função que arruma todas as barras do combate
+const combatFixAllBars = () => {
+  setTimeout(() => {
+    fixAllBars(combat);
+  }, 8500);
+};
+
+//endturnUnturn
+const endturnUnturn = () => {
+  setTimeout(() => {
+    unturnButtons();
+  }, 8500);
+};
+
+//callEndTurn Chama todas as funções do endTurn:
+const callEndTurn = () => {
+  Object.keys(endTurn).forEach((key) => {
+    if (typeof endTurn[key] === 'function') {
+      endTurn[key].call();
+    }
+  });
 };
 
 //Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
 const battleLog = document.querySelector('#console');
 const actionsDisplay = document.querySelector('#actions');
+const skipTurn = document.querySelector('#end-turn');
+//Events listener: endTurn.
+skipTurn.addEventListener('click', callEndTurn);
+
 //cardsInHand: Seletor para as cartas (3) que são a mão do jogador.
 let cardsInHand = document.querySelectorAll('#hand .card');
+
+//endTurn: Objeto que é checado no Fim do turno.
+
+const endTurn = {
+  addActions: addActions,
+  dragonTurn: monsterActions,
+  fixBars: combatFixAllBars,
+  unturn: endturnUnturn,
+  debuffs: [],
+};
 
 //Inicio de jogo: Aqui é onde o jogo é iniciado e personagens são criados.
 

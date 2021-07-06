@@ -336,6 +336,7 @@ main {
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-around;
+  padding-bottom: 10px;
 }
 
 #actionsDiv {
