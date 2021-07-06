@@ -878,7 +878,7 @@ const monsters = {
     status: 'alive',
     agility: 50,
     inteligence: 30,
-    strength: 60,
+    strength: 70,
     maxHp: 1500,
     hp: 1500,
     maxMp: Infinity,
@@ -908,10 +908,10 @@ const monsters = {
 const monsterSkills = {
   fireclaws: {
     name: 'Fire claws',
-    // skill: getFireclaws(),
+    skill: getFireclaws(),
     animation: animateFireclaws(),
     minDamage: function () {
-      return 10;
+      return 40;
     },
     maxDamage: function () {
       return this.strength / 1.5;
@@ -927,13 +927,13 @@ const monsterSkills = {
   },
   winghurricane: {
     name: 'Wing hurricane',
-    // skill: getWinghurricane(),
+    skill: getWinghurricane(),
     animation: animateWinghurricane(),
     minDamage: function () {
-      return 5;
+      return 20;
     },
     maxDamage: function () {
-      return this.inteligence / 2;
+      return this.inteligence * 2;
     },
     manaCost: 30,
     quantity: 3,
@@ -946,18 +946,18 @@ const monsterSkills = {
   },
   dragonstrongfirebreath: {
     name: 'Dragon strong firebreath',
-    // skill: getDragonstrongfirebreath(),
+    skill: getDragonstrongfirebreath(),
     animation: animateDragonstrongfirebreath(),
     minDamage: function () {
-      return 50;
+      return 60;
     },
     maxDamage: function () {
-      return this.inteligence * 2.5;
+      return this.inteligence * 3;
     },
     manaCost: 30,
     quantity: 1,
     type: 'S+ magic damage',
-    actions: 1,
+    actions: 2,
     style: {
       icon: 'Images/skills-icons/dragon-strong-firebreath.png',
       animation: 'Images/skill-animations/dragon-strong-firebreath.gif',
@@ -965,13 +965,13 @@ const monsterSkills = {
   },
   dragonfirebite: {
     name: 'Dragon fire bite',
-    // skill: getFireclaws(),
+    skill: getDragonfirebite(),
     animation: animateDragonfirebite(),
     minDamage: function () {
-      return 0;
+      return 20;
     },
     maxDamage: function () {
-      return this.inteligence;
+      return 2 * this.inteligence;
     },
     manaCost: 30,
     quantity: 5,
@@ -984,10 +984,10 @@ const monsterSkills = {
   },
   firewall: {
     name: 'Fire wall',
-    // skill: getFirewall(),
+    skill: getDragonfirewall(),
     animation: animateFirewall(),
     minDamage: function () {
-      return 10;
+      return 20;
     },
     maxDamage: function () {
       return 1.5 * this.inteligence;
@@ -1002,8 +1002,101 @@ const monsterSkills = {
     },
   },
 };
-
 //OBS: As animações das skills de monstro é comum às animações das demais skills, só o dano da skill e efeitos que não.
+
+//Funções de get magia de monstro
+
+function getFireclaws() {
+  return function fireclaws(caster, target) {
+    let name = 'fireclaws';
+    let skillName = monsterSkills[name].name;
+    let max = monsterSkills[name].maxDamage.bind(this)();
+    let min = monsterSkills[name].minDamage.bind(this)();
+    let mana = monsterSkills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128126; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
+    return message;
+  };
+}
+
+function getWinghurricane() {
+  return function winghurricane(caster, target) {
+    let name = 'winghurricane';
+    let skillName = monsterSkills[name].name;
+    let max = monsterSkills[name].maxDamage.bind(this)();
+    let min = monsterSkills[name].minDamage.bind(this)();
+    let mana = monsterSkills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    damage < 0 ? (damage = 0) : damage;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128126; ${caster.name} acabou de utilizar ${skillName} em ${target.name} que levou ${damage} de dano. A vida atual de ${target.name} é ${target.hp}.`;
+    let effect = rollPercentage(30);
+    if (effect === true) {
+      actions -= 1;
+      message += ` &#8987; Os ventos desorientaram ${target.name}, perdendo 1 action.`;
+    }
+    return message;
+  };
+}
+
+function getDragonstrongfirebreath() {
+  return function dragonstrongfirebreath(caster, target) {
+    let name = 'dragonstrongfirebreath';
+    let skillName = monsterSkills[name].name;
+    let max = monsterSkills[name].maxDamage.bind(this)();
+    let min = monsterSkills[name].minDamage.bind(this)();
+    let mana = monsterSkills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128126; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
+    return message;
+  };
+}
+
+function getDragonfirebite() {
+  return function dragonfirebite(caster, target) {
+    let name = 'dragonfirebite';
+    let skillName = monsterSkills[name].name;
+    let max = monsterSkills[name].maxDamage.bind(this)();
+    let min = monsterSkills[name].minDamage.bind(this)();
+    let mana = monsterSkills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128126; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}`;
+    return message;
+  };
+}
+
+function getDragonfirewall() {
+  return function dragonfirewall(caster, target) {
+    let name = 'firewall';
+    let skillName = monsterSkills[name].name;
+    let max = monsterSkills[name].maxDamage.bind(this)();
+    let min = monsterSkills[name].minDamage.bind(this)();
+    let mana = monsterSkills[name].manaCost;
+    let damage = getRandomBetween(min, max);
+    let effect = rollPercentage(5);
+    effect === true ? (damage = 2 * damage) : (damage = damage);
+    let targetArmor = target.armor;
+    damage = damage - targetArmor;
+    target.hp -= damage;
+    caster.mp -= mana;
+    let message = `[${turn}]: &#128126; ${caster.name} acabou de utilizar ${skillName} em ${target.name}.  ${target.name} levou ${damage} de dano em seus hitpoins. A vida atual de ${target.name} é ${target.hp}.`;
+    effect === true
+      ? (message += `&#128293; TA PEGANO FOGO BIXO. ${target.name} recebeu dano crítico`)
+      : (message = message);
+    return message;
+  };
+}
 
 //Funções de início de jogo: Aqui ficam as funções para utilizar na criação de um novo game
 //choseClass: Define qual classe os players 1 e 2 será, entre mage e warrior. player1 = chooseClass('mage')
@@ -1174,6 +1267,7 @@ function createButtonCard(buttonDOM, skillName, caster) {
   let skill = skills[skillName];
   buttonDOM.classList = 'card unturned';
   buttonDOM.style.backgroundColor = caster.style.color;
+  buttonDOM.style.backgroundImage = 'none';
   buttonDOM.children[0].innerText = skill.name;
   buttonDOM.children[1].src = skill.style.icon;
   buttonDOM.children[2].children[0].innerText = skill.actions;
@@ -1239,6 +1333,67 @@ const coloreBotoes = () => {
 };
 //Utiliza a função coloreBotoes
 coloreBotoes();
+
+//useMonsterskill: Utiliza uma magia do monstro.
+function useMonsterskill(skillName, caster, target) {
+  let message;
+
+  message = monsterSkills[skillName].skill.bind(caster)(caster, target);
+  monsterSkills[skillName].animation(caster, target);
+  setTimeout(() => {
+    writeBattle(message);
+    fixAllBars(combat);
+  }, 3000);
+}
+
+//randomPartyPlayer: Seleciona um player aleatório da party
+const randomPartyPlayer = () => {
+  let index = getRandomBetween(0, party.length - 1);
+  player = party[index];
+  return player;
+};
+
+//getMonstercards Função como getCards mas pega as cartas do monstro
+
+const getMonstercards = (monster) => {
+  let cards = [];
+  monster.skillsList.forEach((skill) => {
+    for (let index = 0; index < monsterSkills[skill].quantity; index += 1) {
+      cards.push(skill);
+    }
+  });
+  return cards;
+};
+
+//monsterRandomcard pega uma carta aleatório da lista do monstro.
+const monsterRandomCard = (monster) => {
+  let array = getMonstercards(monster);
+  let index = getRandomBetween(0, array.length - 1);
+  let cardName = array[index];
+  return cardName;
+};
+
+//monsterActions: Faz 2 ações do monstro.
+const monsterActions = () => {
+  let skill1 = monsterRandomCard(enemy);
+  let skill2 = monsterRandomCard(enemy);
+  let target1 = randomPartyPlayer();
+  let target2 = randomPartyPlayer();
+  if (monsterSkills[skill1].actions > 1) {
+    useMonsterskill(skill1, enemy, target1);
+  } else {
+    if (monsterSkills[skill2].actions > 1) {
+      while (monsterSkills[skill2].actions > 1) {
+        skill2 = monsterRandomCard(enemy);
+      }
+    }
+    useMonsterskill(skill1, enemy, target1);
+    setTimeout(() => {
+      useMonsterskill(skill2, enemy, target2);
+    }, 3500);
+  }
+  return skill1;
+};
 
 //Seletores HTML: Aqui ficarão alguns seletores HTML para utilização no jogo.
 const battleLog = document.querySelector('#console');

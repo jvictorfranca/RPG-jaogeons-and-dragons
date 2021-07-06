@@ -11,7 +11,7 @@ Usar foreach e filter na party para ver quem morreu. Foreach muda as barras e po
 
 Fazer um A com setinha para mostrar battleLOG (html internal link)
 
-
+Refatorar as funções com padrão de style de backgroundImage de cada personagem, e voltar com caster e target para não ficar bugado a animação nas background Image
 
 
 Usar setinterval para checar fim de turno.
