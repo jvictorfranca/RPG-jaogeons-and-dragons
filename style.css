@@ -226,16 +226,18 @@ main {
 
 .hp {
   height: 100%;
-  width: 90%;
+  width: 100%;
   background-color: red;
   align-self: flex-start;
+  transition: 1s;
 }
 
 .mp {
   height: 100%;
-  width: 50%;
+  width: 100%;
   background-color: blue;
   align-self: flex-start;
+  transition: 1s;
 }
 
 .bar-enemy {
