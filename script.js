@@ -1193,15 +1193,15 @@ const colorHP = (character, value) => {
     character.DOM.hp.style.backgroundColor = 'green';
     character.DOM.hp.style.animation = '';
   }
-  if (value <= 75 && value > 40) {
+  if (value <= 75 && value > 50) {
     character.DOM.hp.style.backgroundColor = 'rgb(192, 192, 1)';
     character.DOM.hp.style.animation = '';
   }
-  if (value <= 40 && value > 15) {
+  if (value <= 50 && value > 25) {
     character.DOM.hp.style.backgroundColor = 'orange';
     character.DOM.hp.style.animation = '';
   }
-  if (value <= 15 && value > 5) {
+  if (value <= 25 && value > 5) {
     character.DOM.hp.style.backgroundColor = 'red';
     character.DOM.hp.style.animation = '';
   }
