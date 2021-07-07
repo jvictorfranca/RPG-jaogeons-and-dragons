@@ -1583,8 +1583,6 @@ const afterEndturnButton = () => {
   }, 8500);
 };
 
-eventButtonEndturn();
-
 //cardsInHand: Seletor para as cartas (3) que são a mão do jogador.
 let cardsInHand = document.querySelectorAll('#hand .card');
 
