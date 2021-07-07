@@ -512,6 +512,7 @@ function animateThunderbolt() {
       caster.DOM.effect.style.backgroundImage = 'none';
     }, 1500);
     setTimeout(() => {
+      target.DOM.effect.style.backgroundSize = 'contain';
       target.DOM.effect.style.backgroundImage = `url(${skills.thunderbolt.style.animation})`;
     }, 1500);
     setTimeout(() => {
@@ -1248,13 +1249,13 @@ const fixAllBars = (battleCharacters) => {
 function useSkill(skillName, caster, target) {
   let message;
   let other = otherMember(caster, party);
-  if (caster.mp < skills[skillName].manaCost) {
+  if (actions < skills[skillName].actions) {
+    alert(`Você não possui ações para utilizar ${skills[skillName].name}`);
+  } else if (caster.mp < skills[skillName].manaCost) {
     message = `[${turn}]: ${caster.name} não possui mana para utilizar ${skills[skillName].name}`;
     fixAllBars(combat);
     writeBattle(message);
     //animação sem mana
-  } else if (actions < skills[skillName].actions) {
-    alert(`Você não possui ações para utilizar ${skills[skillName].name}`);
   } else {
     message = skills[skillName].skill.bind(caster)(caster, target, other);
     skills[skillName].animation(caster, target, other);
@@ -1441,7 +1442,7 @@ const checkDead = () => {
   });
 };
 
-//Check lose: Para ver se o jogador perdeu:
+//checkWinLose: Para ver se o jogador perdeu:
 const checkWinLose = () => {
   if (enemy.hp === 0) {
     alert(`Parabéns, você derrotou ${enemy.name}!! ;
