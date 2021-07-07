@@ -474,7 +474,7 @@ function getWarriorrage() {
     let name = 'warriorrage';
     let skillName = skills[name].name;
     let mana = skills[name].manaCost;
-    caster.mana -= mana;
+    caster.mp -= mana;
     let message = `[${turn}]: ${caster.name} está sem ferimentos e mais calmo que o Batman, nada acontece.`;
     if (caster.hp < caster.maxHp / 2) {
       let strengthIncrease = getRandomBetween(30, caster.strength);
