@@ -1234,13 +1234,14 @@ const fixBars = (character) => {
   fixMP(character);
 };
 
-//fixAllBars função que arruma a width das barras de mp e hp de uma array de personagems (combat), também corrige actions e faz o checkDead: Função que checa se um personagem está morto.
+//fixAllBars função que arruma a width das barras de mp e hp de uma array de personagems (combat), também corrige actions e faz o checkDead: Função que checa se um personagem está morto. Checkwinlose. Basicamente faz tudo
 const fixAllBars = (battleCharacters) => {
   battleCharacters.forEach((character) => {
     fixBars(character);
   });
   actionsDisplay.innerText = actions;
   checkDead();
+  checkWinLose();
 };
 
 //useSkill: Função para usar uma magia específica. Já poe o .bind . OBS: O .bind é porque em skills o máximo e mínimo retornam this(). Checa mana do personagem e ações. SkillName é uma string
@@ -1440,6 +1441,19 @@ const checkDead = () => {
   });
 };
 
+//Check lose: Para ver se o jogador perdeu:
+const checkWinLose = () => {
+  if (enemy.hp === 0) {
+    alert(`Parabéns, você derrotou ${enemy.name}!! &$129351;&$129351;
+  O que achou do jogo? Me de seu feedback `);
+  }
+  if (party.length === 0) {
+    alert(
+      `Não foi dessa vez! Você foi massacrado por ${enemy.name} e deixou ${player1.name} e  ${player2.name} morrerem. Se quiser jogar novamente aperte F5 `
+    );
+  }
+};
+
 //Para ataques do monstro
 //useMonsterskill: Utiliza uma magia do monstro.
 function useMonsterskill(skillName, caster, target) {
@@ -1456,7 +1470,12 @@ function useMonsterskill(skillName, caster, target) {
 //randomPartyPlayer: Seleciona um player aleatório da party
 const randomPartyPlayer = () => {
   let index = getRandomBetween(0, party.length - 1);
-  player = party[index];
+
+  if (party.length > 0) {
+    player = party[index];
+  } else {
+    player = player1;
+  }
   return player;
 };
 
