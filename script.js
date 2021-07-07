@@ -444,7 +444,7 @@ function getShielded() {
     let name = 'shielded';
     let skillName = skills[name].name;
     let mana = skills[name].manaCost;
-    caster.mana -= mana;
+    caster.mp -= mana;
     let armorIncrease = getRandomBetween(3, 7);
     caster.armor += armorIncrease;
     let message = `[${turn}]: &#128170; ${caster.name} se concentra para utilizar ${skillName}. Magicamente sua ${caster.armorType} se aprimora em ${armorIncrease} pontos. A armor atual de ${caster.name} é de ${caster.armor}`;
