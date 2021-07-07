@@ -1444,7 +1444,7 @@ const checkDead = () => {
 //Check lose: Para ver se o jogador perdeu:
 const checkWinLose = () => {
   if (enemy.hp === 0) {
-    alert(`Parabéns, você derrotou ${enemy.name}!! &$129351;&$129351;
+    alert(`Parabéns, você derrotou ${enemy.name}!! ;
   O que achou do jogo? Me de seu feedback `);
   }
   if (party.length === 0) {
