@@ -880,7 +880,7 @@ const monsters = {
     class: 'dragon',
     status: 'alive',
     agility: 50,
-    inteligence: 30,
+    inteligence: 35,
     strength: 70,
     maxHp: 1500,
     hp: 1500,
@@ -952,10 +952,10 @@ const monsterSkills = {
     skill: getDragonstrongfirebreath(),
     animation: animateDragonstrongfirebreath(),
     minDamage: function () {
-      return 60;
+      return 80;
     },
     maxDamage: function () {
-      return this.inteligence * 3;
+      return this.inteligence * 5;
     },
     manaCost: 30,
     quantity: 1,
