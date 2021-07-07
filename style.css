@@ -26,6 +26,7 @@ main {
   /* background-color: yellow; */
   height: 90%;
   width: 20%;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -34,7 +35,8 @@ main {
 /* Propriedadades das cartas de skills */
 .card {
   width: 90%;
-  height: 200px;
+  height: 20vh;
+  min-height: 20px;
   background-color: orange;
   display: flex;
   flex-direction: column;
@@ -45,7 +47,7 @@ main {
 }
 
 .card p {
-  font-size: 30px;
+  font-size: 4vh;
   margin: 0;
   text-decoration: underline;
 }
@@ -66,7 +68,7 @@ main {
 }
 
 .card div p {
-  font-size: 22px;
+  font-size: 2.5vh;
   text-decoration: none;
 }
 
@@ -139,12 +141,12 @@ main {
   background-color: black;
   color: red;
   text-align: center;
-  width: 80px;
-  height: 60px;
-  font-size: 20px;
+  width: 13vh;
+  height: 9vh;
+  font-size: 3.5vh;
   align-self: center;
   font-weight: 600;
-  line-height: 150%;
+  line-height: 4.5vh;
   border: solid red;
 }
 
@@ -347,20 +349,20 @@ main {
   text-align: center;
   margin: 0;
   background-color: lightgray;
-  width: 80px;
-  height: 80px;
+  width: 13vh;
+  height: 12vh;
   justify-content: space-between;
 }
 
 #actionsDiv p {
   padding-top: 5px;
   margin: 0;
-  font-size: 20px;
+  font-size: 3vh;
 }
 
 #actionsDiv #actions {
-  padding-bottom: 15px;
-  font-size: 30px;
+  padding-bottom: 2vh;
+  font-size: 5vh;
   color: purple;
   font-weight: 800;
 }

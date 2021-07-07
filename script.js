@@ -1530,8 +1530,6 @@ const addActions = () => {
   }, 8000);
 };
 
-//addTurn : Soma 1 ao turno.
-
 //combatFixAllBars : Função que arruma todas as barras do combate
 const combatFixAllBars = () => {
   setTimeout(() => {
@@ -1564,8 +1562,28 @@ const callEndTurn = () => {
 const battleLog = document.querySelector('#console');
 const actionsDisplay = document.querySelector('#actions');
 const skipTurn = document.querySelector('#end-turn');
-//Events listener: endTurn.
-skipTurn.addEventListener('click', callEndTurn);
+//Events listener: endTurn: Da ação para o botão de endTurn e tira após clicar
+
+const eventButtonEndturn = () => {
+  skipTurn.addEventListener('click', function anon() {
+    callEndTurn();
+    skipTurn.removeEventListener('click', anon);
+  });
+};
+
+eventButtonEndturn();
+
+//eventButtonEndturn: Faz o butão ter ações no endTurn após clicar, com timeout para não bugar
+const afterEndturnButton = () => {
+  setTimeout(() => {
+    skipTurn.addEventListener('click', function anon() {
+      callEndTurn();
+      skipTurn.removeEventListener('click', anon);
+    });
+  }, 8500);
+};
+
+eventButtonEndturn();
 
 //cardsInHand: Seletor para as cartas (3) que são a mão do jogador.
 let cardsInHand = document.querySelectorAll('#hand .card');
@@ -1577,6 +1595,7 @@ const endTurn = {
   dragonTurn: monsterActions,
   fixBars: combatFixAllBars,
   unturn: endturnUnturn,
+  endButton: afterEndturnButton,
   debuffs: [],
 };
 
