@@ -10,6 +10,7 @@ const writeBattle = (message) => {
   p = document.createElement('p');
   p.innerHTML = message;
   battleLog.appendChild(p);
+  battleLog.scrollTop = battleLog.scrollHeight; // Essa parte deixa o scroll sempre para baixo
 };
 
 //otherMember para pegar outro membro da party (se houver), se não houver retorna o mesmo membro (atual)
@@ -1166,6 +1167,7 @@ function getCards(player) {
   return cards;
 }
 
+//Para arrumas as barras
 //fixHP função que arruma a width da barra de hp de um personagem.
 const fixHP = (character) => {
   if (character.DOM.hp !== undefined) {
@@ -1180,6 +1182,33 @@ const fixHP = (character) => {
     let text = `HP: ${character.hp}/${character.maxHp}`;
     character.DOM.hp.style.width = width;
     character.DOM.hpText.innerText = text;
+    colorHP(character, value);
+  }
+};
+
+//colorHP: Função que colore barra de HP com base no personagem., pode colir para verde (full) amarelo(medio) laranja, vermelho e piscando (quase morto)
+const colorHP = (character, value) => {
+  if (value <= 100 && value > 75) {
+    character.DOM.hp.style.backgroundColor = 'green';
+    character.DOM.hp.style.animation = '';
+  }
+  if (value <= 75 && value > 40) {
+    character.DOM.hp.style.backgroundColor = 'rgb(192, 192, 1)';
+    character.DOM.hp.style.animation = '';
+  }
+  if (value <= 40 && value > 15) {
+    character.DOM.hp.style.backgroundColor = 'orange';
+    character.DOM.hp.style.animation = '';
+  }
+  if (value <= 15 && value > 5) {
+    character.DOM.hp.style.backgroundColor = 'red';
+    character.DOM.hp.style.animation = '';
+  }
+  if (value <= 5 && value > 0) {
+    character.DOM.hp.style.backgroundColor = 'red';
+    setTimeout(() => {
+      character.DOM.hp.style.animation = 'blink 2s infinite';
+    }, 1000);
   }
 };
 
@@ -1205,16 +1234,16 @@ const fixBars = (character) => {
   fixMP(character);
 };
 
-//fixAllBars função que arruma a width das barras de mp e hp de uma array de personagems (combat)
+//fixAllBars função que arruma a width das barras de mp e hp de uma array de personagems (combat), também corrige actions e faz o checkDead: Função que checa se um personagem está morto.
 const fixAllBars = (battleCharacters) => {
   battleCharacters.forEach((character) => {
     fixBars(character);
   });
   actionsDisplay.innerText = actions;
+  checkDead();
 };
 
 //useSkill: Função para usar uma magia específica. Já poe o .bind . OBS: O .bind é porque em skills o máximo e mínimo retornam this(). Checa mana do personagem e ações. SkillName é uma string
-
 function useSkill(skillName, caster, target) {
   let message;
   let other = otherMember(caster, party);
@@ -1236,6 +1265,7 @@ function useSkill(skillName, caster, target) {
   }
 }
 
+//Para animar a carta de magia
 //getPartyCardsArray: retorna uma array de objetos, com o primeira key player que é o indice do personagem na party e o segundo parametro card que é o nome da carta. Utiliza a skillList do personagem para fazer.
 const getPartyCardsArray = () => {
   let array = [];
@@ -1336,6 +1366,81 @@ const coloreBotoes = () => {
 //Utiliza a função coloreBotoes
 coloreBotoes();
 
+//Para personagens mortos ou revividos
+//Para animar um personagem morto. ou reviver
+const animateDead = (player) => {
+  player.DOM.hp.parentElement.parentElement.parentElement.classList.add('dead');
+  player.DOM.character.classList.add('dead');
+};
+
+const animateRevive = (player) => {
+  player.DOM.hp.parentElement.parentElement.parentElement.classList.remove(
+    'dead'
+  );
+  player.DOM.character.classList.remove('dead');
+};
+
+//Para setar status de personagem dead ou alive, tirar da party e colocar em DeadCharacters ou vice-versa
+const setDead = (player) => {
+  player.status = 'dead';
+  if (deadPlayers.includes(player) === false) {
+    deadPlayers.push(player);
+  }
+  party = party.filter((player) => player.status === 'alive');
+};
+
+const setRevived = (player) => {
+  player.status = 'alive';
+  if (party.includes(player) === false) {
+    party.push(player);
+  }
+  deadPlayers = deadPlayers.filter((player) => player.status === 'dead');
+};
+
+//Para matar ou reviver um personagem.
+const kill = (player) => {
+  if (party.includes(player)) {
+    player.hp = 0;
+    animateDead(player);
+    setDead(player);
+    writeBattle(`[${turn}]: &#128128; ${player.name} morreu`);
+    turnDeadCards(player);
+  }
+};
+
+const revive = (player) => {
+  if (deadPlayers.includes(player)) {
+    player.hp = 10;
+    animateRevive(player);
+    setRevived(player);
+    writeBattle(`[${turn}]: &#128150; ${player.name} reviveu`);
+    fixAllBars(combat);
+  }
+};
+
+//turnDeadCards: função para mudar para turned todas as classes daquele player: Usa elem.replaceWith(elem.cloneNode(true)) : que cria  um exato elemento igual sem event listener
+const turnDeadCards = (player) => {
+  let cards = document.querySelectorAll('.card');
+  cards.forEach((card) => {
+    if (card.style.backgroundColor === player.style.color) {
+      card.classList = 'card turned';
+      card.style.backgroundSize = 'contain';
+      card.style.backgroundImage = 'url(Images/cardBack/Backgorund.png)';
+      card.replaceWith(card.cloneNode(true));
+    }
+  });
+};
+
+//checkDead: Checa se um player morreu se a vida se igualou a zero.
+const checkDead = () => {
+  party.forEach((player) => {
+    if (player.hp === 0) {
+      kill(player);
+    }
+  });
+};
+
+//Para ataques do monstro
 //useMonsterskill: Utiliza uma magia do monstro.
 function useMonsterskill(skillName, caster, target) {
   let message;
@@ -1380,7 +1485,6 @@ const monsterActions = () => {
   let skill1 = monsterRandomCard(enemy);
   let skill2 = monsterRandomCard(enemy);
   let target1 = randomPartyPlayer();
-  let target2 = randomPartyPlayer();
   if (monsterSkills[skill1].actions > 1) {
     useMonsterskill(skill1, enemy, target1);
   } else {
@@ -1391,6 +1495,7 @@ const monsterActions = () => {
     }
     useMonsterskill(skill1, enemy, target1);
     setTimeout(() => {
+      let target2 = randomPartyPlayer();
       useMonsterskill(skill2, enemy, target2);
     }, 3500);
   }

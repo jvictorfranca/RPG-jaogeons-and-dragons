@@ -55,4 +55,12 @@ usar .bind() e um objeto de skills com .bind
 Utilizar remove event listener.
  https://stackoverflow.com/questions/28610365/how-can-i-add-an-event-for-a-one-time-click-to-a-function    (cuidado, pode remover todos)
  https://developer.mozilla.org/pt-BR/docs/Web/API/EventTarget/removeEventListener
+
  https://www.w3schools.com/jsref/met_element_removeeventlistener.asp
+
+
+ Scroll sempre para baixo: https://stackoverflow.com/questions/18614301/keep-overflow-div-scrolled-to-bottom-unless-user-scrolls-up
+ function updateScroll(){
+    var element = document.getElementById("yourDivID");
+    element.scrollTop = element.scrollHeight;
+}

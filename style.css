@@ -365,10 +365,40 @@ main {
   font-weight: 800;
 }
 
+/* Div que tampa a mão de cartas para não poder usar durante o turno. o display padrão é none e só é utilizado no callEndTurn */
 #handcover {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.33);
   width: 20%;
   height: 90%;
   display: none;
+}
+
+/* Opções da classe blink, do hp quando está muito baixo (javascript function colorHP em fixallBars) */
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Opções de estilo quando o personagem morre */
+.bars-character.dead img {
+  background-color: black !important;
+  content: url(Images/CharacterIcons/deadSkull.png) !important;
+}
+
+.bars-character.dead .hp,
+.bars-character.dead p {
+  display: none;
+}
+
+.bars-character.dead .hp-container {
+  background-color: black;
+}
+
+.character.dead {
+  background-image: url(Images/character-animations/deadCharacter.gif) !important;
 }
